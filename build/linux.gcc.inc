@@ -95,8 +95,8 @@ ifeq (ppc32,$(arch))
 endif
 
 ifeq (bg,$(arch))
-    CPLUS = mpicxx
-    CONLY = mpicc
+    CPLUS = powerpc64-bgq-linux-g++
+    CONLY = powerpc64-bgq-linux-gcc
 endif
 
 # for some gcc versions on Solaris, -m64 may imply V9, but perhaps not everywhere (TODO: verify)
