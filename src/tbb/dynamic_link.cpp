@@ -533,7 +533,10 @@ OPEN_INTERNAL_NAMESPACE
     }
 
     bool dynamic_link( const char* library, const dynamic_link_descriptor descriptors[], size_t required, dynamic_link_handle *handle, int flags ) {
+    /* TODO Is this function even called if __TBB_DYNAMIC_LOAD_ENABLED=0? */
+    #if __TBB_DYNAMIC_LOAD_ENABLED
         atomic_once( &init_dl_data, init_dl_data_state );
+    #endif /* __TBB_DYNAMIC_LOAD_ENABLED */
 
         // TODO: May global_symbols_link find weak symbols?
         dynamic_link_handle library_handle = ( flags & DYNAMIC_LINK_GLOBAL ) ? global_symbols_link( library, descriptors, required ) : 0;
