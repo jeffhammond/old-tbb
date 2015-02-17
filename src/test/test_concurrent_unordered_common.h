@@ -1,5 +1,5 @@
 /*
-    Copyright 2005-2014 Intel Corporation.  All Rights Reserved.
+    Copyright 2005-2015 Intel Corporation.  All Rights Reserved.
 
     This file is part of Threading Building Blocks. Threading Building Blocks is free software;
     you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -49,12 +49,19 @@ inline void CheckAllocator(MyTable &table, size_t expected_allocs, size_t expect
     }
 }
 
+template<typename T>
+struct strip_const { typedef T type; };
+
+template<typename T>
+struct strip_const<const T> { typedef T type; };
+
 // value generator for cumap
 template <typename K, typename V = std::pair<const K, K> >
 struct ValueFactory {
+    typedef typename strip_const<K>::type Kstrip;
     static V make(const K &value) { return V(value, value); }
-    static K key(const V &value) { return value.first; }
-    static K get(const V& value) { return value.second; }
+    static Kstrip key(const V &value) { return value.first; }
+    static Kstrip get(const V& value) { return value.second; }
 };
 
 // generator for cuset
@@ -100,7 +107,7 @@ bool equal_containers( container_type const& lhs, container_type const& rhs ) {
     if ( lhs.size() != rhs.size() ) {
         return false;
     }
-    return std::equal( lhs.begin(), lhs.end(), lhs.begin(), Harness::IsEqual() );
+    return std::equal( lhs.begin(), lhs.end(), rhs.begin(), Harness::IsEqual() );
 }
 
 #include "test_initializer_list.h"

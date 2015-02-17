@@ -1,5 +1,5 @@
 /*
-    Copyright 2005-2014 Intel Corporation.  All Rights Reserved.
+    Copyright 2005-2015 Intel Corporation.  All Rights Reserved.
 
     This file is part of Threading Building Blocks. Threading Building Blocks is free software;
     you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -802,7 +802,7 @@ LargeMemoryBlock *Backend::getLargeBlock(size_t size)
         (LargeMemoryBlock*)genericGetBlock(1, size, /*needAlignedRes=*/false);
     if (lmb) {
         lmb->unalignedSize = size;
-        if (extMemPool->mustBeAddedToGlobalLargeBlockList())
+        if (extMemPool->userPool())
             extMemPool->lmbList.add(lmb);
     }
     return lmb;
@@ -869,7 +869,7 @@ void AllLargeBlocksList::remove(LargeMemoryBlock *lmb)
 
 void Backend::putLargeBlock(LargeMemoryBlock *lmb)
 {
-    if (extMemPool->mustBeAddedToGlobalLargeBlockList())
+    if (extMemPool->userPool())
         extMemPool->lmbList.remove(lmb);
     genericPutBlock((FreeBlock *)lmb, lmb->unalignedSize);
 }
@@ -1205,10 +1205,10 @@ bool Backend::destroy()
 {
     // no active threads are allowed in backend while destroy() called
     verify();
-
-    freeLargeBins.reset();
-    freeAlignedBins.reset();
-
+    if (!inUserPool()) {
+        freeLargeBins.reset();
+        freeAlignedBins.reset();
+    }
     while (regionList) {
         MemRegion *helper = regionList->next;
         if (inUserPool())

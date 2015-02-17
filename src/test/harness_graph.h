@@ -1,5 +1,5 @@
 /*
-    Copyright 2005-2014 Intel Corporation.  All Rights Reserved.
+    Copyright 2005-2015 Intel Corporation.  All Rights Reserved.
 
     This file is part of Threading Building Blocks. Threading Building Blocks is free software;
     you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -970,6 +970,7 @@ void test_extract_on_node() {
         ASSERT(pv.size() == 0, "error in pred array count after extract");
         ASSERT(node0.successor_count() == 0 && q2.predecessor_count() == 0, "error in succ count after extract");
         ASSERT(sv.size() == 0, "error in succ array count after extract");
+        g.wait_for_all();
     }
 }
 

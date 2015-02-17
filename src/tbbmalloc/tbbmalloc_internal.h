@@ -1,5 +1,5 @@
 /*
-    Copyright 2005-2014 Intel Corporation.  All Rights Reserved.
+    Copyright 2005-2015 Intel Corporation.  All Rights Reserved.
 
     This file is part of Threading Building Blocks. Threading Building Blocks is free software;
     you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -880,7 +880,8 @@ struct ExtMemoryPool {
     AllLocalCaches    allLocalCaches;
 
     intptr_t          poolId;
-    // to find all large objects
+    // To find all large objects. This used during user pool destruction,
+    // to release all backreferencies in large blocks (slab blocks do not have them).
     AllLargeBlocksList lmbList;
     // Callbacks to be used instead of MapMemory/UnmapMemory.
     rawAllocType      rawAlloc;
@@ -910,15 +911,16 @@ struct ExtMemoryPool {
         backend.reset();
     }
     void destroy() {
-        loc.reset();
-        allLocalCaches.reset();
+        if (!userPool()) {
+            loc.reset();
+            allLocalCaches.reset();
+        }
         // pthread_key_dtors must be disabled before memory unmapping
         // TODO: race-free solution
         tlsPointerKey.~TLSKey();
         if (rawFree || !userPool())
             backend.destroy();
     }
-    bool mustBeAddedToGlobalLargeBlockList() const { return userPool(); }
     void delayRegionsReleasing(bool mode) { delayRegsReleasing = mode; }
     inline bool regionsAreReleaseable() const;
 

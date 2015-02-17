@@ -2,6 +2,22 @@
 The list of most significant changes made over time in
 Intel(R) Threading Building Blocks (Intel(R) TBB).
 ------------------------------------------------------------------------
+Intel TBB 4.3 Update 3
+TBB_INTERFACE_VERSION == 8003
+
+Changes (w.r.t. Intel TBB 4.3 Update 2):
+
+- Move constructor and assignment operator were added to unique_lock.
+
+Preview Features:
+
+- Time overhead for memory pool destruction was reduced.
+
+Open-source contributions integrated:
+
+- Build error fix for iOS* by Raf Schietekat.
+
+------------------------------------------------------------------------
 Intel TBB 4.3 Update 2
 TBB_INTERFACE_VERSION == 8002
 
@@ -40,6 +56,7 @@ Changes (w.r.t. Intel TBB 4.3):
 - Different kind of solutions for each TBB example were merged.
 
 Preview Features:
+
 - Task priorities are re-enabled in preview binaries.
 
 Bugs fixed:

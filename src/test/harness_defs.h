@@ -1,5 +1,5 @@
 /*
-    Copyright 2005-2014 Intel Corporation.  All Rights Reserved.
+    Copyright 2005-2015 Intel Corporation.  All Rights Reserved.
 
     This file is part of Threading Building Blocks. Threading Building Blocks is free software;
     you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -91,16 +91,6 @@
   #define __TBB_THREAD_LOCAL_VARIABLES_PRESENT 0
 #else
   #define __TBB_THREAD_LOCAL_VARIABLES_PRESENT 1
-#endif
-
-#if _WIN32 || __ANDROID__
-  /** Windows and Android Bionic library do not support posix_memalign() **/
-  #define __TBB_POSIX_MEMALIGN_PRESENT 0
-  /** Windows and Android Bionic library do not support pvalloc() **/
-  #define __TBB_PVALLOC_PRESENT 0
-#else
-  #define __TBB_POSIX_MEMALIGN_PRESENT 1
-  #define __TBB_PVALLOC_PRESENT 1
 #endif
 
 //MSVC 2013 is unable to properly resolve call to overloaded operator= with std::initializer_list argument for std::pair list elements

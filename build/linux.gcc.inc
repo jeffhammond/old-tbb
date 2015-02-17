@@ -1,4 +1,4 @@
-# Copyright 2005-2014 Intel Corporation.  All Rights Reserved.
+# Copyright 2005-2015 Intel Corporation.  All Rights Reserved.
 #
 # This file is part of Threading Building Blocks. Threading Building Blocks is free software;
 # you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -95,8 +95,8 @@ ifeq (ppc32,$(arch))
 endif
 
 ifeq (bg,$(arch))
-    CPLUS = powerpc64-bgq-linux-g++
-    CONLY = powerpc64-bgq-linux-gcc
+    CPLUS = mpicxx
+    CONLY = mpicc
 endif
 
 # for some gcc versions on Solaris, -m64 may imply V9, but perhaps not everywhere (TODO: verify)

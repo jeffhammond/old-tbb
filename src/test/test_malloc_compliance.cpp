@@ -1,5 +1,5 @@
 /*
-    Copyright 2005-2014 Intel Corporation.  All Rights Reserved.
+    Copyright 2005-2015 Intel Corporation.  All Rights Reserved.
 
     This file is part of Threading Building Blocks. Threading Building Blocks is free software;
     you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -21,9 +21,11 @@
 const unsigned MByte = 1024*1024;
 bool __tbb_test_errno = false;
 
+#define __STDC_LIMIT_MACROS 1 // to get SIZE_MAX from stdint.h
+
 #include "tbb/tbb_config.h"
 
-#if __TBB_WIN8UI_SUPPORT	
+#if __TBB_WIN8UI_SUPPORT
 // testing allocator itself not iterfaces
 // so we can use desktop functions
 #define _CRT_USE_WINAPI_FAMILY_DESKTOP_APP !_M_ARM
@@ -35,11 +37,10 @@ int TestMain() {
 }
 #else /* __TBB_WIN8UI_SUPPORT	 */
 
+#if _WIN32 || _WIN64
 /* _WIN32_WINNT should be defined at the very beginning,
    because other headers might include <windows.h>
 */
-
-#if _WIN32 || _WIN64
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
 #include "tbb/machine/windows_api.h"
@@ -74,12 +75,13 @@ void limitMem( size_t limit )
     }
 }
 // Do not test errno with static VC runtime
-#else
+#else // _WIN32 || _WIN64
 #include <sys/resource.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
 #include <sys/types.h>  // uint64_t on FreeBSD, needed for rlim_t
+#include <stdint.h>     // SIZE_MAX
 #include "harness_report.h"
 
 void limitMem( size_t limit )
@@ -99,13 +101,14 @@ void limitMem( size_t limit )
         exit(1);
     }
 }
-#endif
+#endif  // _WIN32 || _WIN64
 
 #define ASSERT_ERRNO(cond, msg)  ASSERT( !__tbb_test_errno || (cond), msg )
 #define CHECK_ERRNO(cond) (__tbb_test_errno && (cond))
 
 #include <time.h>
 #include <errno.h>
+#include <limits.h> // for CHAR_BIT
 #define __TBB_NO_IMPLICIT_LINKAGE 1
 #include "tbb/scalable_allocator.h"
 
@@ -305,6 +308,57 @@ void ReallocParam()
         Trealloc(bufs[j], 0);
 }
 
+void CheckArgumentsOverflow()
+{
+    void *p;
+    const size_t params[] = {SIZE_MAX, SIZE_MAX-16};
+
+    for (unsigned i=0; i<Harness::array_length(params); i++) {
+        p = Tmalloc(params[i]);
+        ASSERT(!p, NULL);
+        ASSERT_ERRNO(errno==ENOMEM, NULL);
+        p = Trealloc(NULL, params[i]);
+        ASSERT(!p, NULL);
+        ASSERT_ERRNO(errno==ENOMEM, NULL);
+        p = Tcalloc(1, params[i]);
+        ASSERT(!p, NULL);
+        ASSERT_ERRNO(errno==ENOMEM, NULL);
+        p = Tcalloc(params[i], 1);
+        ASSERT(!p, NULL);
+        ASSERT_ERRNO(errno==ENOMEM, NULL);
+    }
+    const size_t max_alignment = size_t(1) << (sizeof(size_t)*CHAR_BIT - 1);
+    if (Rposix_memalign) {
+        int ret = Rposix_memalign(&p, max_alignment, ~max_alignment);
+        ASSERT(ret == ENOMEM, NULL);
+        for (unsigned i=0; i<Harness::array_length(params); i++) {
+            ret = Rposix_memalign(&p, max_alignment, params[i]);
+            ASSERT(ret == ENOMEM, NULL);
+            ret = Rposix_memalign(&p, sizeof(void*), params[i]);
+            ASSERT(ret == ENOMEM, NULL);
+        }
+    }
+    if (Raligned_malloc) {
+        p = Raligned_malloc(~max_alignment, max_alignment);
+        ASSERT(!p, NULL);
+        for (unsigned i=0; i<Harness::array_length(params); i++) {
+            p = Raligned_malloc(params[i], max_alignment);
+            ASSERT(!p, NULL);
+            ASSERT_ERRNO(errno==ENOMEM, NULL);
+            p = Raligned_malloc(params[i], sizeof(void*));
+            ASSERT(!p, NULL);
+            ASSERT_ERRNO(errno==ENOMEM, NULL);
+        }
+    }
+
+    p = Tcalloc(SIZE_MAX/2-16, SIZE_MAX/2-16);
+    ASSERT(!p, NULL);
+    ASSERT_ERRNO(errno==ENOMEM, NULL);
+    p = Tcalloc(SIZE_MAX/2, SIZE_MAX/2);
+    ASSERT(!p, NULL);
+    ASSERT_ERRNO(errno==ENOMEM, NULL);
+}
+
 HARNESS_EXPORT
 int main(int argc, char* argv[]) {
     argC=argc;
@@ -383,6 +437,7 @@ int main(int argc, char* argv[]) {
     __tbb_test_errno = true;
 #endif // _MSC_VER
 
+    CheckArgumentsOverflow();
     for( int p=MaxThread; p>=MinThread; --p ) {
         REMARK("testing with %d threads\n", p );
         for (int limit=0; limit<2; limit++) {
@@ -942,7 +997,7 @@ void CMemTest::Free_NULL()
     for (int i=0; i<COUNTEXPERIMENT; i++)
     {
         Tfree(NULL);
-        if (errno != 0)
+        if (CHECK_ERRNO(errno))
         {
             CountErrors++;
             if (ShouldReportError()) REPORT("error is found by a call free with parameter NULL\n");

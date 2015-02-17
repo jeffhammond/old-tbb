@@ -1,5 +1,5 @@
 /*
-    Copyright 2005-2014 Intel Corporation.  All Rights Reserved.
+    Copyright 2005-2015 Intel Corporation.  All Rights Reserved.
 
     This file is part of Threading Building Blocks. Threading Building Blocks is free software;
     you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -1139,12 +1139,17 @@ void MemoryPool::destroy()
         if (next)
             next->prev = prev;
     }
-    bootStrapBlocks.reset();
-    orphanedBlocks.reset();
     // slab blocks in non-default pool do not have backreferences,
     // only large objects do
     if (extMemPool.userPool())
         extMemPool.lmbList.releaseAll</*poolDestroy=*/true>(&extMemPool.backend);
+    else {
+        // There and below in extMemPool.destroy(), do not restore initial state
+        // for user pool, because it's just about to be released. But for system
+        // pool restoring, we do not want to do zeroing of it on subsequent reload.
+        bootStrapBlocks.reset();
+        orphanedBlocks.reset();
+    }
     extMemPool.destroy();
 }
 
@@ -2212,6 +2217,7 @@ void *MemoryPool::getFromLLOCache(TLSData* tls, size_t size, size_t alignment)
     size_t allocationSize = LargeObjectCache::alignToBin(size+headersSize+alignment);
     if (allocationSize < size) // allocationSize is wrapped around after alignToBin
         return NULL;
+    MALLOC_ASSERT(allocationSize >= alignment, "Overflow must be checked before.");
 
     if (tls)
         lmb = tls->lloc.get(allocationSize);
@@ -2917,7 +2923,16 @@ extern "C" void* __TBB_malloc_safer_realloc(void* ptr, size_t sz, void* original
 
 extern "C" void * scalable_calloc(size_t nobj, size_t size)
 {
-    size_t arraySize = nobj * size;
+    // it's square root of maximal size_t value
+    const size_t mult_not_overflow = size_t(1) << (sizeof(size_t)*CHAR_BIT/2);
+    const size_t arraySize = nobj * size;
+
+    // check for overflow during multiplication:
+    if (nobj>=mult_not_overflow || size>=mult_not_overflow) // 1) heuristic check
+        if (nobj && arraySize / nobj != size) {             // 2) exact check
+            errno = ENOMEM;
+            return NULL;
+        }
     void* result = internalMalloc(arraySize);
     if (result)
         memset(result, 0, arraySize);

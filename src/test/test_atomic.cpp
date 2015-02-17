@@ -1,5 +1,5 @@
 /*
-    Copyright 2005-2014 Intel Corporation.  All Rights Reserved.
+    Copyright 2005-2015 Intel Corporation.  All Rights Reserved.
 
     This file is part of Threading Building Blocks. Threading Building Blocks is free software;
     you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -376,7 +376,7 @@ namespace test_constexpr_initialization_helper {
     struct white_box_ad_hoc_type {
         int _int;
         constexpr white_box_ad_hoc_type(int a =0) : _int(a) {};
-        constexpr operator int() const { return _int;}
+        constexpr operator int() const { return _int; }
     };
 }
 //some white boxing
@@ -385,7 +385,7 @@ namespace tbb { namespace internal {
     struct atomic_impl<test_constexpr_initialization_helper::white_box_ad_hoc_type>: atomic_impl<int> {
         atomic_impl() = default;
         constexpr atomic_impl(test_constexpr_initialization_helper::white_box_ad_hoc_type value):atomic_impl<int>(value){}
-        constexpr operator int(){ return this->my_storage.my_value;}
+        constexpr operator int() const { return this->my_storage.my_value; }
     };
 }}
 
