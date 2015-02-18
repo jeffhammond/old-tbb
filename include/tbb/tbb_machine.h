@@ -242,7 +242,10 @@ template<> struct atomic_selector<8> {
     #elif __ia64__
         #include "machine/linux_ia64.h"
     #elif __powerpc__
-        #include "machine/mac_ppc.h"
+        /* Jeff: POWER7 (big endian) is fine but POWER8 (little endian) is not,
+         *       so first we will try without the PPC assembly. */
+        //#include "machine/mac_ppc.h"
+        #include "machine/gcc_generic.h"
     #elif __arm__
         #include "machine/gcc_armv7.h"
     #elif __TBB_GCC_BUILTIN_ATOMICS_PRESENT
