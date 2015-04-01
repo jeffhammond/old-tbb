@@ -963,12 +963,14 @@ public:
     //! the first item
     reference front() {
         __TBB_ASSERT( size()>0, NULL);
-        return (my_segment[0].template load<relaxed>().template pointer<T>())[0];
+        const segment_value_t& segment_value = my_segment[0].template load<relaxed>();
+        return (segment_value.template pointer<T>())[0];
     }
     //! the first item const
     const_reference front() const {
         __TBB_ASSERT( size()>0, NULL);
-        return static_cast<const T*>(my_segment[0].array)[0];
+        const segment_value_t& segment_value = my_segment[0].template load<relaxed>();
+        return (segment_value.template pointer<const T>())[0];
     }
     //! the last item
     reference back() {

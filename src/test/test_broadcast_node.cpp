@@ -62,9 +62,10 @@ public:
     }
 
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
+    typedef typename tbb::flow::receiver<T>::predecessor_list_type predecessor_list_type;
     /*override*/void internal_add_built_predecessor(tbb::flow::sender<T> &) {}
     /*override*/void internal_delete_built_predecessor(tbb::flow::sender<T> &) {}
-    /*override*/void copy_predecessors(std::vector<tbb::flow::sender<T>*> &) {}
+    /*override*/void copy_predecessors(predecessor_list_type &) {}
     /*override*/size_t predecessor_count() { return 0; }
     /*override*/void reset_receiver(tbb::flow::reset_flags /*f*/) { }
 #else
@@ -84,10 +85,10 @@ void test_serial_broadcasts() {
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
         ASSERT(b.successor_count() == 0, NULL);
         ASSERT(b.predecessor_count() == 0, NULL);
-        typename tbb::flow::broadcast_node<T>::successor_vector_type my_succs;
+        typename tbb::flow::broadcast_node<T>::successor_list_type my_succs;
         b.copy_successors(my_succs);
         ASSERT(my_succs.size() == 0, NULL);
-        typename tbb::flow::broadcast_node<T>::predecessor_vector_type my_preds;
+        typename tbb::flow::broadcast_node<T>::predecessor_list_type my_preds;
         b.copy_predecessors(my_preds);
         ASSERT(my_preds.size() == 0, NULL);
 #endif

@@ -272,15 +272,19 @@ void TestFunctionNode() {
     tbb::flow::remove_edge(fnode1, qnode1);
 
     // rejecting
+    serial_fn_state0 = 0;
     tbb::flow::make_edge(fnode0, qnode1);
+    tbb::flow::make_edge(qnode0, fnode0);
     REMARK("Testing rejecting function_node:");
     ASSERT(!fnode0.my_queue, "node should have no queue");
     ASSERT(!fnode0.my_successors.empty(), "successor edge not added");
-    REMARK(" add_pred");
-    ASSERT(fnode0.register_predecessor(qnode0), "Cannot register as predecessor");
-    ASSERT(!fnode0.my_predecessors.empty(), "Missing predecessor");
-    REMARK(" reset");
+    qnode0.try_put(1);
+    BACKOFF_WAIT(!serial_fn_state0,"rejecting function_node didn't start");
+    qnode0.try_put(2);   // rejecting node should reject, reverse.
+    BACKOFF_WAIT(!fnode0.my_predecessors.empty(), "Missing predecessor ---");
+    serial_fn_state0 = 2;   // release function_node body.
     g.wait_for_all();
+    REMARK(" reset");
     g.reset();  // should reverse the edge from the input to the function node.
     ASSERT(!qnode0.my_successors.empty(), "empty successors after reset()");
     ASSERT(fnode0.my_predecessors.empty(), "predecessor not reversed");

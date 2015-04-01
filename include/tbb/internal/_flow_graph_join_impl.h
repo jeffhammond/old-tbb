@@ -201,7 +201,7 @@ namespace internal {
         typedef T input_type;
         typedef sender<T> predecessor_type;
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
-        typedef std::vector<predecessor_type *> predecessor_vector_type;
+        typedef typename receiver<input_type>::predecessor_list_type predecessor_list_type;
 #endif
     private:
         // ----------- Aggregator ------------
@@ -221,7 +221,7 @@ namespace internal {
                 predecessor_type *my_pred;
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
                 size_t cnt_val;
-                predecessor_vector_type *pvec;
+                predecessor_list_type *plist;
 #endif
             };
             reserving_port_operation(const T& e, op_type t) :
@@ -293,7 +293,7 @@ namespace internal {
                     __TBB_store_with_release(current->status, SUCCEEDED);
                     break;
                 case blt_pred_cpy:
-                    my_predecessors.copy_predecessors(*(current->pvec));
+                    my_predecessors.copy_predecessors(*(current->plist));
                     __TBB_store_with_release(current->status, SUCCEEDED);
                     break;
 #endif  /* TBB_PREVIEW_FLOW_GRAPH_FEATURES */
@@ -380,9 +380,9 @@ namespace internal {
             return op_data.cnt_val;
         }
 
-        /*override*/void copy_predecessors(predecessor_vector_type &v) {
+        /*override*/void copy_predecessors(predecessor_list_type &l) {
             reserving_port_operation op_data(blt_pred_cpy);
-            op_data.pvec = &v;
+            op_data.plist = &l;
             my_aggregator.execute(&op_data);
         }
 #endif  /* TBB_PREVIEW_FLOW_GRAPH_FEATURES */
@@ -409,7 +409,7 @@ namespace internal {
         typedef sender<T> predecessor_type;
         typedef queueing_port<T> my_node_type;
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
-        typedef std::vector<predecessor_type *> predecessor_vector_type;
+        typedef typename receiver<input_type>::predecessor_list_type predecessor_list_type;
 #endif
 
     // ----------- Aggregator ------------
@@ -430,7 +430,7 @@ namespace internal {
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
             sender<T> *pred;
             size_t cnt_val;
-            predecessor_vector_type *pvec;
+            predecessor_list_type *plist;
 #endif
             task * bypass_t;
             // constructor for value parameter
@@ -502,7 +502,7 @@ namespace internal {
                     __TBB_store_with_release(current->status, SUCCEEDED);
                     break;
                 case blt_pred_cpy:
-                    my_built_predecessors.copy_edges(*(current->pvec));
+                    my_built_predecessors.copy_edges(*(current->plist));
                     __TBB_store_with_release(current->status, SUCCEEDED);
                     break;
 #endif  /* TBB_PREVIEW_FLOW_GRAPH_FEATURES */
@@ -575,9 +575,9 @@ namespace internal {
             return op_data.cnt_val;
         }
 
-        /*override*/void copy_predecessors(predecessor_vector_type &v) {
+        /*override*/void copy_predecessors(predecessor_list_type &l) {
             queueing_port_operation op_data(blt_pred_cpy);
-            op_data.pvec = &v;
+            op_data.plist = &l;
             my_aggregator.execute(&op_data);
         }
 
@@ -608,7 +608,7 @@ namespace internal {
         typedef function_body<input_type, tag_value> my_tag_func_type;
         typedef tagged_buffer<tag_value,T,NO_TAG> my_buffer_type;
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
-        typedef std::vector<predecessor_type *> predecessor_vector_type;
+        typedef typename receiver<input_type>::predecessor_list_type predecessor_list_type;
 #endif
     private:
 // ----------- Aggregator ------------
@@ -627,7 +627,7 @@ namespace internal {
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
             predecessor_type *pred;
             size_t cnt_val;
-            predecessor_vector_type *pvec;
+            predecessor_list_type *plist;
 #endif
             tag_value my_tag_value;
             // constructor for value parameter
@@ -682,7 +682,7 @@ namespace internal {
                     __TBB_store_with_release(current->status, SUCCEEDED);
                     break;
                 case blt_pred_cpy:
-                    my_built_predecessors.copy_edges(*(current->pvec));
+                    my_built_predecessors.copy_edges(*(current->plist));
                     __TBB_store_with_release(current->status, SUCCEEDED);
                     break;
 #endif
@@ -767,9 +767,9 @@ namespace internal {
             return op_data.cnt_val;
         }
 
-        /*override*/void copy_predecessors(predecessor_vector_type &v) {
+        /*override*/void copy_predecessors(predecessor_list_type &l) {
             tag_matching_port_operation op_data(blt_pred_cpy);
-            op_data.pvec = &v;
+            op_data.plist = &l;
             my_aggregator.execute(&op_data);
         }
 #endif
@@ -1176,7 +1176,7 @@ namespace internal {
         using input_ports_type::tuple_accepted;
         using input_ports_type::tuple_rejected;
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
-        typedef std::vector<successor_type *> successor_vector_type;
+        typedef typename sender<output_type>::successor_list_type successor_list_type;
 #endif
 
     private:
@@ -1197,7 +1197,7 @@ namespace internal {
                 successor_type *my_succ;
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
                 size_t cnt_val;
-                successor_vector_type *svec;
+                successor_list_type *slist;
 #endif
             };
             task *bypass_t;
@@ -1285,7 +1285,7 @@ namespace internal {
                     __TBB_store_with_release(current->status, SUCCEEDED);
                     break;
                 case blt_succ_cpy:
-                    my_successors.copy_successors(*(current->svec));
+                    my_successors.copy_successors(*(current->slist));
                     __TBB_store_with_release(current->status, SUCCEEDED);
                     break;
 #endif  /* TBB_PREVIEW_FLOW_GRAPH_FEATURES */
@@ -1350,9 +1350,9 @@ namespace internal {
             return op_data.cnt_val;
         }
 
-        /*override*/ void copy_successors(successor_vector_type &v) {
+        /*override*/ void copy_successors(successor_list_type &l) {
             join_node_base_operation op_data(blt_succ_cpy);
-            op_data.svec = &v;
+            op_data.slist = &l;
             my_aggregator.execute(&op_data);
         }
 #endif  /* TBB_PREVIEW_FLOW_GRAPH_FEATURES */

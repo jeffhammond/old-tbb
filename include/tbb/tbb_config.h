@@ -150,12 +150,13 @@
     #define __TBB_CPP11_STD_BEGIN_END_PRESENT         (_MSC_VER >= 1700 || __GXX_EXPERIMENTAL_CXX0X__ && __INTEL_COMPILER >= 1310 && (__TBB_GCC_VERSION >= 40600 || _LIBCPP_VERSION))
     #define __TBB_CPP11_AUTO_PRESENT                  (_MSC_VER >= 1600 || __GXX_EXPERIMENTAL_CXX0X__ && __INTEL_COMPILER >= 1210)
     #define __TBB_CPP11_DECLTYPE_PRESENT              (_MSC_VER >= 1600 || __GXX_EXPERIMENTAL_CXX0X__ && __INTEL_COMPILER >= 1210)
+    #define __TBB_CPP11_LAMBDAS_PRESENT               (__INTEL_CXX11_MODE__ && __INTEL_COMPILER >= 1200)
 #elif __clang__
 //TODO: these options need to be rechecked
 /** on OS X* the only way to get C++11 is to use clang. For library features (e.g. exception_ptr) libc++ is also
  *  required. So there is no need to check GCC version for clang**/
-    #define __TBB_CPP11_VARIADIC_TEMPLATES_PRESENT     (__has_feature(__cxx_variadic_templates__))
-    #define __TBB_CPP11_RVALUE_REF_PRESENT             (__has_feature(__cxx_rvalue_references__) && (__TBB_GCC_VERSION >= 40300 || _LIBCPP_VERSION))
+    #define __TBB_CPP11_VARIADIC_TEMPLATES_PRESENT    (__has_feature(__cxx_variadic_templates__))
+    #define __TBB_CPP11_RVALUE_REF_PRESENT            (__has_feature(__cxx_rvalue_references__) && (__TBB_GCC_VERSION >= 40300 || _LIBCPP_VERSION))
 /** TODO: extend exception_ptr related conditions to cover libstdc++ **/
     #define __TBB_EXCEPTION_PTR_PRESENT               (__cplusplus >= 201103L && _LIBCPP_VERSION)
     #define __TBB_STATIC_ASSERT_PRESENT               __has_feature(__cxx_static_assert__)
@@ -174,6 +175,7 @@
     #define __TBB_CPP11_STD_BEGIN_END_PRESENT         (__has_feature(__cxx_range_for__) && _LIBCPP_VERSION)
     #define __TBB_CPP11_AUTO_PRESENT                  __has_feature(__cxx_auto_type__)
     #define __TBB_CPP11_DECLTYPE_PRESENT              __has_feature(__cxx_decltype__)
+    #define __TBB_CPP11_LAMBDAS_PRESENT               __has_feature(cxx_lambdas)
 #elif __GNUC__
     #define __TBB_CPP11_VARIADIC_TEMPLATES_PRESENT    __GXX_EXPERIMENTAL_CXX0X__
     #define __TBB_CPP11_RVALUE_REF_PRESENT            __GXX_EXPERIMENTAL_CXX0X__
@@ -191,6 +193,7 @@
     #define __TBB_CPP11_STD_BEGIN_END_PRESENT         (__GXX_EXPERIMENTAL_CXX0X__ && __TBB_GCC_VERSION >= 40600)
     #define __TBB_CPP11_AUTO_PRESENT                  (__GXX_EXPERIMENTAL_CXX0X__ && __TBB_GCC_VERSION >= 40400)
     #define __TBB_CPP11_DECLTYPE_PRESENT              (__GXX_EXPERIMENTAL_CXX0X__ && __TBB_GCC_VERSION >= 40400)
+    #define __TBB_CPP11_LAMBDAS_PRESENT               (__GXX_EXPERIMENTAL_CXX0X__ && __TBB_GCC_VERSION >= 40500)
 #elif _MSC_VER
     #define __TBB_CPP11_VARIADIC_TEMPLATES_PRESENT    (_MSC_VER >= 1800)
     #define __TBB_CPP11_RVALUE_REF_PRESENT            (_MSC_VER >= 1600)
@@ -204,6 +207,7 @@
     #define __TBB_CPP11_STD_BEGIN_END_PRESENT         (_MSC_VER >= 1700)
     #define __TBB_CPP11_AUTO_PRESENT                  (_MSC_VER >= 1600)
     #define __TBB_CPP11_DECLTYPE_PRESENT              (_MSC_VER >= 1600)
+    #define __TBB_CPP11_LAMBDAS_PRESENT               (_MSC_VER >= 1600)
 #else
     #define __TBB_CPP11_VARIADIC_TEMPLATES_PRESENT    0
     #define __TBB_CPP11_RVALUE_REF_PRESENT            0
@@ -217,10 +221,12 @@
     #define __TBB_CPP11_STD_BEGIN_END_PRESENT         0
     #define __TBB_CPP11_AUTO_PRESENT                  0
     #define __TBB_CPP11_DECLTYPE_PRESENT              0
+    #define __TBB_CPP11_LAMBDAS_PRESENT               0
 #endif
 
 // C++11 standard library features
 
+#define __TBB_CPP11_VARIADIC_TUPLE_PRESENT          (!_MSC_VER || _MSC_VER >=1800)
 #define __TBB_CPP11_TYPE_PROPERTIES_PRESENT         (_LIBCPP_VERSION || _MSC_VER >= 1700)
 #define __TBB_TR1_TYPE_PROPERTIES_IN_STD_PRESENT    (__GXX_EXPERIMENTAL_CXX0X__ && __TBB_GCC_VERSION >= 40300 || _MSC_VER >= 1600)
 // GCC has a partial support of type properties
@@ -455,13 +461,15 @@
 #endif
 
 #ifdef _VARIADIC_MAX
-#define __TBB_VARIADIC_MAX _VARIADIC_MAX
+    #define __TBB_VARIADIC_MAX _VARIADIC_MAX
 #else
-#if _MSC_VER >= 1700
-#define __TBB_VARIADIC_MAX 5  /* current VS11 setting, may change. */
-#else
-#define __TBB_VARIADIC_MAX 10
-#endif
+    #if _MSC_VER == 1700
+        #define __TBB_VARIADIC_MAX 5 // VS11 setting, issue resolved in VS12
+    #elif _MSC_VER == 1600
+        #define __TBB_VARIADIC_MAX 10 // VS10 setting
+    #else
+        #define __TBB_VARIADIC_MAX 15 
+    #endif
 #endif
 
 /** __TBB_WIN8UI_SUPPORT enables support of New Windows*8 Store Apps and limit a possibility to load
@@ -629,7 +637,15 @@
 
 // MSVC 2013 and ICC 15 seems do not generate implicit move constructor for empty derived class while should
 #define __TBB_CPP11_IMPLICIT_MOVE_MEMBERS_GENERATION_FOR_DERIVED_BROKEN  (__TBB_CPP11_RVALUE_REF_PRESENT &&  \
-      ( !__INTEL_COMPILER && _MSC_VER && _MSC_VER <=1800 || __INTEL_COMPILER && __INTEL_COMPILER <= 1500 ))
+      ( !__INTEL_COMPILER && _MSC_VER && _MSC_VER <= 1800 || __INTEL_COMPILER && __INTEL_COMPILER <= 1500 ))
+
+#define __TBB_CPP11_DECLVAL_BROKEN (_MSC_VER == 1600 || (__GNUC__ && __TBB_GCC_VERSION < 40500) )
+
+//The implicit upcasting of the tuple of a reference of a derived class to a base class fails on icc 13.X 
+//if the system's gcc environment is 4.8
+#if (__INTEL_COMPILER >=1300 && __INTEL_COMPILER <=1310) && __TBB_GCC_VERSION>=40700 && __GXX_EXPERIMENTAL_CXX0X__
+    #define __TBB_UPCAST_OF_TUPLE_OF_REF_BROKEN 1 
+#endif
 
 /** End of __TBB_XXX_BROKEN macro section **/
 
@@ -643,4 +659,7 @@
 #define __TBB_ALLOCATOR_CONSTRUCT_VARIADIC      (__TBB_CPP11_VARIADIC_TEMPLATES_PRESENT && __TBB_CPP11_RVALUE_REF_PRESENT)
 
 #define __TBB_VARIADIC_PARALLEL_INVOKE          (TBB_PREVIEW_VARIADIC_PARALLEL_INVOKE && __TBB_CPP11_VARIADIC_TEMPLATES_PRESENT && __TBB_CPP11_RVALUE_REF_PRESENT)
+#define __TBB_PREVIEW_COMPOSITE_NODE            (TBB_PREVIEW_FLOW_GRAPH_NODES && __TBB_CPP11_VARIADIC_TEMPLATES_PRESENT \
+                                                 && __TBB_CPP11_RVALUE_REF_PRESENT && __TBB_CPP11_AUTO_PRESENT) \
+                                                 && __TBB_CPP11_VARIADIC_TUPLE_PRESENT && !__TBB_UPCAST_OF_TUPLE_OF_REF_BROKEN
 #endif /* __TBB_tbb_config_H */

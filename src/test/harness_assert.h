@@ -30,8 +30,9 @@
 void ReportError( const char* filename, int line, const char* expression, const char* message); 
 void ReportWarning( const char* filename, int line, const char* expression, const char* message); 
 
-#define ASSERT(p,message) ((p)?(void)0:ReportError(__FILE__,__LINE__,#p,message))
-#define ASSERT_WARNING(p,message) ((p)?(void)0:ReportWarning(__FILE__,__LINE__,#p,message))
+#define ASSERT_CUSTOM(p,message,file,line)  ((p)?(void)0:ReportError(file,line,#p,message))
+#define ASSERT(p,message)                   ASSERT_CUSTOM(p,message,__FILE__,__LINE__)
+#define ASSERT_WARNING(p,message)           ((p)?(void)0:ReportWarning(__FILE__,__LINE__,#p,message))
 
 //! Compile-time error if x and y have different types
 template<typename T>

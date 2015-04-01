@@ -1266,7 +1266,10 @@ void TestCPP11Types() {
 #if __TBB_CPP11_SMART_POINTERS_PRESENT
     typedef std::pair< const std::shared_ptr<int>, std::shared_ptr<int> > shr_shr_t;
     std::list<shr_shr_t> arrShrShr;
-    for ( int i=0; i<NUMBER; ++i ) arrShrShr.push_back( shr_shr_t( std::make_shared<int>(i), std::make_shared<int>(NUMBER-i) ) );
+    for ( int i=0; i<NUMBER; ++i ) {
+        const int NUMBER_minus_i = NUMBER - i;
+        arrShrShr.push_back( shr_shr_t( std::make_shared<int>(i), std::make_shared<int>(NUMBER_minus_i) ) );
+    }
     TypeTester< /*default_construction_present = */true>( arrShrShr );
 
     typedef std::pair< const std::weak_ptr<int>, std::weak_ptr<int> > wk_wk_t;

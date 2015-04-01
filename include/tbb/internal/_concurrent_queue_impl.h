@@ -1015,11 +1015,11 @@ template<typename Container, typename Value>
 class concurrent_queue_iterator: public concurrent_queue_iterator_base,
         public std::iterator<std::forward_iterator_tag,Value> {
 
-#if !defined(_MSC_VER) || defined(__INTEL_COMPILER)
+#if !__TBB_TEMPLATE_FRIENDS_BROKEN
     template<typename T, class A>
     friend class ::tbb::concurrent_bounded_queue;
 #else
-public: // workaround for MSVC
+public:
 #endif
 
     //! Construct iterator pointing to head of queue.

@@ -50,7 +50,7 @@ void simple_read_write_tests() {
 
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
         ASSERT(n.successor_count() == M, NULL);
-        typename tbb::flow::overwrite_node<R>::successor_vector_type my_succs;
+        typename tbb::flow::overwrite_node<R>::successor_list_type my_succs;
         n.copy_successors(my_succs);
         ASSERT(my_succs.size() == M, NULL);
         ASSERT(n.predecessor_count() == 0, NULL);

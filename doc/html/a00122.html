@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.4"/>
-<title>tbb::interface6::runtime_loader Class Reference</title>
+<title>tbb::flow::interface7::receiver&lt; T &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,281 +33,134 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00233.html">tbb</a></li><li class="navelem"><b>interface6</b></li><li class="navelem"><a class="el" href="a00122.html">runtime_loader</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00237.html">tbb</a></li><li class="navelem"><b>flow</b></li><li class="navelem"><b>interface7</b></li><li class="navelem"><a class="el" href="a00122.html">receiver</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="a00390.html">List of all members</a>  </div>
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
+<a href="a00325.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">tbb::interface6::runtime_loader Class Reference</div>  </div>
+<div class="title">tbb::flow::interface7::receiver&lt; T &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Load TBB at runtime.  
+<p>Pure virtual template class that defines a receiver of messages of type T.  
  <a href="a00122.html#details">More...</a></p>
 
-<p><code>#include &lt;runtime_loader.h&gt;</code></p>
+<p><code>#include &lt;flow_graph.h&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for tbb::interface6::runtime_loader:</div>
+Inheritance diagram for tbb::flow::interface7::receiver&lt; T &gt;:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="a00122.png" usemap="#tbb::interface6::runtime_loader_map" alt=""/>
-  <map id="tbb::interface6::runtime_loader_map" name="tbb::interface6::runtime_loader_map">
+  <img src="a00122.png" usemap="#tbb::flow::interface7::receiver&lt; T &gt;_map" alt=""/>
+  <map id="tbb::flow::interface7::receiver&lt; T &gt;_map" name="tbb::flow::interface7::receiver&lt; T &gt;_map">
+<area href="a00025.html" title="Forwards messages of type T to all successors. " alt="tbb::flow::interface7::broadcast_node&lt; T &gt;" shape="rect" coords="0,56,352,80"/>
+<area href="a00027.html" title="Forwards messages in arbitrary order. " alt="tbb::flow::interface7::buffer_node&lt; T, A &gt;" shape="rect" coords="362,56,714,80"/>
+<area href="a00088.html" title="Forwards messages only if the threshold has not been reached. " alt="tbb::flow::interface7::limiter_node&lt; T &gt;" shape="rect" coords="724,56,1076,80"/>
+<area href="a00102.html" alt="tbb::flow::interface7::overwrite_node&lt; T &gt;" shape="rect" coords="1086,56,1438,80"/>
+<area href="a00107.html" title="Forwards messages in priority order. " alt="tbb::flow::interface7::priority_queue_node&lt; T, Compare, A &gt;" shape="rect" coords="181,112,533,136"/>
+<area href="a00108.html" title="Forwards messages in FIFO order. " alt="tbb::flow::interface7::queue_node&lt; T, A &gt;" shape="rect" coords="543,112,895,136"/>
+<area href="a00174.html" alt="tbb::flow::interface7::write_once_node&lt; T &gt;" shape="rect" coords="1086,112,1438,136"/>
+<area href="a00141.html" title="Forwards messages in sequence order. " alt="tbb::flow::interface7::sequencer_node&lt; T, A &gt;" shape="rect" coords="543,168,895,192"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ab85c82f9c0ccd91905f2795a79ac1295"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295">error_mode</a> { <a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295af9c9137d6acdb0fd37f1a92b5cdaeb36">em_status</a>, 
-<a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295a17ec1019cffa635146eaefb042e28a2c">em_throw</a>, 
-<a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295ac41f8e03c7e8bfc6a420be035d59cc35">em_abort</a>
- }</td></tr>
-<tr class="memdesc:ab85c82f9c0ccd91905f2795a79ac1295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error mode constants.  <a href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295">More...</a><br/></td></tr>
-<tr class="separator:ab85c82f9c0ccd91905f2795a79ac1295"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a264674772d9f4240d89aa9d939c1eef7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7">error_code</a> { <br/>
-&#160;&#160;<a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7afc7eba28f2fc936312f041cf85276434">ec_ok</a>, 
-<a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7a670e4d0a5a3c1bbcdff9e5ee16dc9c01">ec_bad_call</a>, 
-<a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7afd928f63eb3da0980e746d58374b07c3">ec_bad_arg</a>, 
-<a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7a71f874957c0322f499ba764dd0bb8732">ec_bad_lib</a>, 
-<br/>
-&#160;&#160;<a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7aae7497a49ceae69d06d6ab9fef636064">ec_bad_ver</a>, 
-<a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7a5e694560f3ada80d2cc25881b5ae43dd">ec_no_lib</a>
-<br/>
- }</td></tr>
-<tr class="memdesc:a264674772d9f4240d89aa9d939c1eef7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error codes.  <a href="a00122.html#a264674772d9f4240d89aa9d939c1eef7">More...</a><br/></td></tr>
-<tr class="separator:a264674772d9f4240d89aa9d939c1eef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16eccc851b858604344bb8f1bb9eedc8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16eccc851b858604344bb8f1bb9eedc8"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#a16eccc851b858604344bb8f1bb9eedc8">input_type</a></td></tr>
+<tr class="memdesc:a16eccc851b858604344bb8f1bb9eedc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The input type of this receiver. <br/></td></tr>
+<tr class="separator:a16eccc851b858604344bb8f1bb9eedc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbadf5511bd568d283040cd88bd4e81e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afbadf5511bd568d283040cd88bd4e81e"></a>
+typedef <a class="el" href="a00140.html">sender</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#afbadf5511bd568d283040cd88bd4e81e">predecessor_type</a></td></tr>
+<tr class="memdesc:afbadf5511bd568d283040cd88bd4e81e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The predecessor type for this node. <br/></td></tr>
+<tr class="separator:afbadf5511bd568d283040cd88bd4e81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9731176a6fdb65d32edc9c6720c5b145"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9731176a6fdb65d32edc9c6720c5b145"></a>
+typedef <br class="typebreak"/>
+<a class="el" href="a00056.html">internal::edge_container</a><br class="typebreak"/>
+&lt; <a class="el" href="a00122.html#afbadf5511bd568d283040cd88bd4e81e">predecessor_type</a> &gt;<br class="typebreak"/>
+::edge_list_type&#160;</td><td class="memItemRight" valign="bottom"><b>predecessor_list_type</b></td></tr>
+<tr class="separator:a9731176a6fdb65d32edc9c6720c5b145"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2f87eaf99564c705aa140f2eb8848eaa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f87eaf99564c705aa140f2eb8848eaa"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#a2f87eaf99564c705aa140f2eb8848eaa">runtime_loader</a> (<a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295">error_mode</a> mode=<a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295ac41f8e03c7e8bfc6a420be035d59cc35">em_abort</a>)</td></tr>
-<tr class="memdesc:a2f87eaf99564c705aa140f2eb8848eaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize object but do not load TBB. <br/></td></tr>
-<tr class="separator:a2f87eaf99564c705aa140f2eb8848eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e0932074d2f3ad04605e7e5da88c561"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#a3e0932074d2f3ad04605e7e5da88c561">runtime_loader</a> (char const *path[], int min_ver=TBB_INTERFACE_VERSION, int max_ver=INT_MAX, <a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295">error_mode</a> mode=<a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295ac41f8e03c7e8bfc6a420be035d59cc35">em_abort</a>)</td></tr>
-<tr class="memdesc:a3e0932074d2f3ad04605e7e5da88c561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize object and load TBB.  <a href="#a3e0932074d2f3ad04605e7e5da88c561">More...</a><br/></td></tr>
-<tr class="separator:a3e0932074d2f3ad04605e7e5da88c561"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3b96f53e165e3d692c3c36292ba0737"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3b96f53e165e3d692c3c36292ba0737"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#aa3b96f53e165e3d692c3c36292ba0737">~runtime_loader</a> ()</td></tr>
-<tr class="memdesc:aa3b96f53e165e3d692c3c36292ba0737"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy object. <br/></td></tr>
-<tr class="separator:aa3b96f53e165e3d692c3c36292ba0737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2949e9adcac56a2cb9864437be8e22e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7">error_code</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#ae2949e9adcac56a2cb9864437be8e22e">load</a> (char const *path[], int min_ver=TBB_INTERFACE_VERSION, int max_ver=INT_MAX)</td></tr>
-<tr class="memdesc:ae2949e9adcac56a2cb9864437be8e22e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load TBB.  <a href="#ae2949e9adcac56a2cb9864437be8e22e">More...</a><br/></td></tr>
-<tr class="separator:ae2949e9adcac56a2cb9864437be8e22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85bf9ee021a2076a3ac7cfd70aae7345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7">error_code</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#a85bf9ee021a2076a3ac7cfd70aae7345">status</a> ()</td></tr>
-<tr class="memdesc:a85bf9ee021a2076a3ac7cfd70aae7345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report status.  <a href="#a85bf9ee021a2076a3ac7cfd70aae7345">More...</a><br/></td></tr>
-<tr class="separator:a85bf9ee021a2076a3ac7cfd70aae7345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a733889a9053478ef2fb2528e2205bf07"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a733889a9053478ef2fb2528e2205bf07"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#a733889a9053478ef2fb2528e2205bf07">~receiver</a> ()</td></tr>
+<tr class="memdesc:a733889a9053478ef2fb2528e2205bf07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br/></td></tr>
+<tr class="separator:a733889a9053478ef2fb2528e2205bf07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee5067bb4f4b71ffa786c1b33cb9aa6a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee5067bb4f4b71ffa786c1b33cb9aa6a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#aee5067bb4f4b71ffa786c1b33cb9aa6a">try_put</a> (const T &amp;t)</td></tr>
+<tr class="memdesc:aee5067bb4f4b71ffa786c1b33cb9aa6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put an item to the receiver. <br/></td></tr>
+<tr class="separator:aee5067bb4f4b71ffa786c1b33cb9aa6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16427aa709505de93ffe0d79136e4251"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16427aa709505de93ffe0d79136e4251"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#a16427aa709505de93ffe0d79136e4251">register_predecessor</a> (<a class="el" href="a00122.html#afbadf5511bd568d283040cd88bd4e81e">predecessor_type</a> &amp;)</td></tr>
+<tr class="memdesc:a16427aa709505de93ffe0d79136e4251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a predecessor to the node. <br/></td></tr>
+<tr class="separator:a16427aa709505de93ffe0d79136e4251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55adae6228bbdc1539695e1ec20e9762"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55adae6228bbdc1539695e1ec20e9762"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00122.html#a55adae6228bbdc1539695e1ec20e9762">remove_predecessor</a> (<a class="el" href="a00122.html#afbadf5511bd568d283040cd88bd4e81e">predecessor_type</a> &amp;)</td></tr>
+<tr class="memdesc:a55adae6228bbdc1539695e1ec20e9762"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a predecessor from the node. <br/></td></tr>
+<tr class="separator:a55adae6228bbdc1539695e1ec20e9762"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eb0f353746d17af003c9a87fb47a5a6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6eb0f353746d17af003c9a87fb47a5a6"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>internal_add_built_predecessor</b> (<a class="el" href="a00122.html#afbadf5511bd568d283040cd88bd4e81e">predecessor_type</a> &amp;)=0</td></tr>
+<tr class="separator:a6eb0f353746d17af003c9a87fb47a5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27b36a8e03fa43f74ebd796f73ecfbfc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27b36a8e03fa43f74ebd796f73ecfbfc"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>internal_delete_built_predecessor</b> (<a class="el" href="a00122.html#afbadf5511bd568d283040cd88bd4e81e">predecessor_type</a> &amp;)=0</td></tr>
+<tr class="separator:a27b36a8e03fa43f74ebd796f73ecfbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63273d246d9dd8d259f9cc1eead42eb2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63273d246d9dd8d259f9cc1eead42eb2"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>copy_predecessors</b> (predecessor_list_type &amp;)=0</td></tr>
+<tr class="separator:a63273d246d9dd8d259f9cc1eead42eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a708474643ea80fe4a05bde83865e8f6f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a708474643ea80fe4a05bde83865e8f6f"></a>
+virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><b>predecessor_count</b> ()=0</td></tr>
+<tr class="separator:a708474643ea80fe4a05bde83865e8f6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3581a59d59476fffdc7caeea06c26371"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3581a59d59476fffdc7caeea06c26371"></a>
+virtual task *&#160;</td><td class="memItemRight" valign="bottom"><b>try_put_task</b> (const T &amp;t)=0</td></tr>
+<tr class="separator:a3581a59d59476fffdc7caeea06c26371"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac902b1e09eea9748223eb50dc38d3575"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac902b1e09eea9748223eb50dc38d3575"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>reset_receiver</b> (__TBB_PFG_RESET_ARG(reset_flags f=rf_reset_protocol))=0</td></tr>
+<tr class="separator:ac902b1e09eea9748223eb50dc38d3575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae91eab3e06d4139ac38f143c74fe9eab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae91eab3e06d4139ac38f143c74fe9eab"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_continue_receiver</b> ()</td></tr>
+<tr class="separator:ae91eab3e06d4139ac38f143c74fe9eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:abaf9bf74ca5f2854d09f5f07337280eb"><td class="memTemplParams" colspan="2"><a class="anchor" id="abaf9bf74ca5f2854d09f5f07337280eb"></a>
+template&lt;typename R , typename B &gt; </td></tr>
+<tr class="memitem:abaf9bf74ca5f2854d09f5f07337280eb"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00122.html#abaf9bf74ca5f2854d09f5f07337280eb">run_and_put_task</a></td></tr>
+<tr class="memdesc:abaf9bf74ca5f2854d09f5f07337280eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">put item to successor; return task to run the successor if possible. <br/></td></tr>
+<tr class="separator:abaf9bf74ca5f2854d09f5f07337280eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1360e38efe396058978cf3754ad620f5"><td class="memTemplParams" colspan="2"><a class="anchor" id="a1360e38efe396058978cf3754ad620f5"></a>
+template&lt;typename X , typename Y &gt; </td></tr>
+<tr class="memitem:a1360e38efe396058978cf3754ad620f5"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><b>internal::broadcast_cache</b></td></tr>
+<tr class="separator:a1360e38efe396058978cf3754ad620f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbd9ac2610587a99cd7d43344297cc49"><td class="memTemplParams" colspan="2"><a class="anchor" id="acbd9ac2610587a99cd7d43344297cc49"></a>
+template&lt;typename X , typename Y &gt; </td></tr>
+<tr class="memitem:acbd9ac2610587a99cd7d43344297cc49"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><b>internal::round_robin_cache</b></td></tr>
+<tr class="separator:acbd9ac2610587a99cd7d43344297cc49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05ec930a348f7eed564236d00edbda24"><td class="memTemplParams" colspan="2"><a class="anchor" id="a05ec930a348f7eed564236d00edbda24"></a>
+template&lt;typename U &gt; </td></tr>
+<tr class="memitem:a05ec930a348f7eed564236d00edbda24"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00122.html#a05ec930a348f7eed564236d00edbda24">limiter_node</a></td></tr>
+<tr class="memdesc:a05ec930a348f7eed564236d00edbda24"><td class="mdescLeft">&#160;</td><td class="mdescRight">put receiver back in initial state <br/></td></tr>
+<tr class="separator:a05ec930a348f7eed564236d00edbda24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73cd25db4e6e9497940262f70f3ffc54"><td class="memTemplParams" colspan="2"><a class="anchor" id="a73cd25db4e6e9497940262f70f3ffc54"></a>
+template&lt;typename TT , typename M &gt; </td></tr>
+<tr class="memitem:a73cd25db4e6e9497940262f70f3ffc54"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><b>internal::successor_cache</b></td></tr>
+<tr class="separator:a73cd25db4e6e9497940262f70f3ffc54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Load TBB at runtime. </p>
-<p><b>Usage:</b> </p>
-<p>In source code:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;tbb/runtime_loader.h&quot;</span></div>
-<div class="line"></div>
-<div class="line"><span class="keywordtype">char</span> <span class="keyword">const</span> * path[] = { <span class="stringliteral">&quot;&lt;install dir&gt;/lib/ia32&quot;</span>, NULL };</div>
-<div class="line">tbb::runtime_loader loader( path );</div>
-<div class="line"></div>
-<div class="line"><span class="comment">// Now use TBB.</span></div>
-</div><!-- fragment --><p>Link with <code>tbbproxy.lib</code> (or <code>libtbbproxy.a</code>) instead of <code>tbb.lib</code> (<code>libtbb.dylib</code>, <code>libtbb.so</code>).</p>
-<p>TBB library will be loaded at runtime from <code></code> &lt;install dir&gt;=""&gt;/lib/ia32 directory.</p>
-<p><b>Attention:</b> </p>
-<p>All <code><a class="el" href="a00122.html" title="Load TBB at runtime. ">runtime_loader</a></code> objects (in the same module, i.e. exe or dll) share some global state. The most noticeable piece of global state is loaded TBB library. There are some implications: </p>
-<pre class="fragment">-   Only one TBB library can be loaded per module.
+<div class="textblock"><h3>template&lt;typename T&gt;<br/>
+class tbb::flow::interface7::receiver&lt; T &gt;</h3>
 
--   If one object has already loaded TBB library, another object will not load TBB.
-    If the loaded TBB library is suitable for the second object, both will use TBB
-    cooperatively, otherwise the second object will report an error.
-
--   \c runtime_loader objects will not work (correctly) in parallel due to absence of
-    synchronization.</pre> </div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a class="anchor" id="a264674772d9f4240d89aa9d939c1eef7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7">tbb::interface6::runtime_loader::error_code</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Error codes. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a264674772d9f4240d89aa9d939c1eef7afc7eba28f2fc936312f041cf85276434"></a>ec_ok</em>&nbsp;</td><td class="fielddoc">
-<p>No errors. </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a264674772d9f4240d89aa9d939c1eef7a670e4d0a5a3c1bbcdff9e5ee16dc9c01"></a>ec_bad_call</em>&nbsp;</td><td class="fielddoc">
-<p>Invalid function call (e. g. <a class="el" href="a00122.html#ae2949e9adcac56a2cb9864437be8e22e" title="Load TBB. ">load()</a> called when TBB is already loaded). </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a264674772d9f4240d89aa9d939c1eef7afd928f63eb3da0980e746d58374b07c3"></a>ec_bad_arg</em>&nbsp;</td><td class="fielddoc">
-<p>Invalid argument passed. </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a264674772d9f4240d89aa9d939c1eef7a71f874957c0322f499ba764dd0bb8732"></a>ec_bad_lib</em>&nbsp;</td><td class="fielddoc">
-<p>Invalid library found (e. g. <code>TBB_runtime_version</code> symbol not found). </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a264674772d9f4240d89aa9d939c1eef7aae7497a49ceae69d06d6ab9fef636064"></a>ec_bad_ver</em>&nbsp;</td><td class="fielddoc">
-<p>TBB found but version is not suitable. </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a264674772d9f4240d89aa9d939c1eef7a5e694560f3ada80d2cc25881b5ae43dd"></a>ec_no_lib</em>&nbsp;</td><td class="fielddoc">
-<p>No suitable TBB library found. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<a class="anchor" id="ab85c82f9c0ccd91905f2795a79ac1295"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295">tbb::interface6::runtime_loader::error_mode</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Error mode constants. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="ab85c82f9c0ccd91905f2795a79ac1295af9c9137d6acdb0fd37f1a92b5cdaeb36"></a>em_status</em>&nbsp;</td><td class="fielddoc">
-<p>Save status of operation and continue. </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="ab85c82f9c0ccd91905f2795a79ac1295a17ec1019cffa635146eaefb042e28a2c"></a>em_throw</em>&nbsp;</td><td class="fielddoc">
-<p>Throw an exception of tbb::runtime_loader::error_code type. </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="ab85c82f9c0ccd91905f2795a79ac1295ac41f8e03c7e8bfc6a420be035d59cc35"></a>em_abort</em>&nbsp;</td><td class="fielddoc">
-<p>Print message to <code>stderr</code> and call <code>abort()</code>. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a3e0932074d2f3ad04605e7e5da88c561"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">tbb::interface6::runtime_loader::runtime_loader </td>
-          <td>(</td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>path</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>min_ver</em> = <code>TBB_INTERFACE_VERSION</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>max_ver</em> = <code>INT_MAX</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295">error_mode</a>&#160;</td>
-          <td class="paramname"><em>mode</em> = <code><a class="el" href="a00122.html#ab85c82f9c0ccd91905f2795a79ac1295ac41f8e03c7e8bfc6a420be035d59cc35">em_abort</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initialize object and load TBB. </p>
-<p>See <a class="el" href="a00122.html#ae2949e9adcac56a2cb9864437be8e22e" title="Load TBB. ">load()</a> for details.</p>
-<p>If error mode is <code>em_status</code>, call <a class="el" href="a00122.html#a85bf9ee021a2076a3ac7cfd70aae7345" title="Report status. ">status()</a> to check whether TBB was loaded or not. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>List of directories to search TBB in. </td></tr>
-    <tr><td class="paramname">min_ver</td><td>Minimal suitable version of TBB. </td></tr>
-    <tr><td class="paramname">max_ver</td><td>Maximal suitable version of TBB. </td></tr>
-    <tr><td class="paramname">mode</td><td>Error mode for this object. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ae2949e9adcac56a2cb9864437be8e22e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7">error_code</a> tbb::interface6::runtime_loader::load </td>
-          <td>(</td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>path</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>min_ver</em> = <code>TBB_INTERFACE_VERSION</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>max_ver</em> = <code>INT_MAX</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Load TBB. </p>
-<p>The method searches the directories specified in <code>path</code>[] array for the TBB library. When the library is found, it is loaded and its version is checked. If the version is not suitable, the library is unloaded, and the search continues.</p>
-<p><b>Note:</b> </p>
-<p>For security reasons, avoid using relative directory names. For example, never load TBB from current (<code>"."</code>), parent (<code>".."</code>) or any other relative directory (like <code>"lib"</code> ). Use only absolute directory names (e. g. "/usr/local/lib").</p>
-<p>For the same security reasons, avoid using system default directories (<code>""</code>) on Windows. (See <a href="http://www.microsoft.com/technet/security/advisory/2269637.mspx">http://www.microsoft.com/technet/security/advisory/2269637.mspx</a> for details.)</p>
-<p>Neglecting these rules may cause your program to execute 3-rd party malicious code.</p>
-<p><b>Errors:</b> </p>
-<ul>
-<li><code>ec_bad_call</code> - TBB already loaded by this object.</li>
-<li><code>ec_bad_arg</code> - <code>min_ver</code> and/or <code>max_ver</code> negative or zero, or <code>min_ver</code> &gt; <code>max_ver</code>.</li>
-<li><code>ec_bad_ver</code> - TBB of unsuitable version already loaded by another object.</li>
-<li><code>ec_no_lib</code> - No suitable library found. </li>
-</ul>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>List of directories to search TBB in. </td></tr>
-    <tr><td class="paramname">min_ver</td><td>Minimal suitable version of TBB. </td></tr>
-    <tr><td class="paramname">max_ver</td><td>Maximal suitable version of TBB. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a85bf9ee021a2076a3ac7cfd70aae7345"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00122.html#a264674772d9f4240d89aa9d939c1eef7">error_code</a> tbb::interface6::runtime_loader::status </td>
-          <td>(</td>
-          <td class="paramname">)</td><td></td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Report status. </p>
-<p>If error mode is <code>em_status</code>, the function returns status of the last operation. </p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>runtime_loader.h</li>
+<p>Pure virtual template class that defines a receiver of messages of type T. </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
+<li><a class="el" href="a00194.html">flow_graph.h</a></li>
 </ul>
 </div><!-- contents -->
 <hr>

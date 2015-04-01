@@ -1666,7 +1666,7 @@ void TestTypes() {
     TestTypes(arrWk);
 #else
     REPORT("Known issue: C++11 smart pointer tests are skipped.\n");
-#endif /* __TBB_CXX11_TYPES_PRESENT */
+#endif /* __TBB_CPP11_SMART_POINTERS_PRESENT */
 }
 
 int TestMain () {

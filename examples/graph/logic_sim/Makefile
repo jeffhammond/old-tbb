@@ -39,10 +39,10 @@ endif
 all:    release test
 
 release: *.cpp
-	$(CXX) -O2 -DNDEBUG $(CXXFLAGS) -o $(PROG) $(PROG).cpp -ltbb $(LIBS) $(CXX0XFLAGS)
+	$(CXX) -O2 -DNDEBUG $(CXXFLAGS) -o $(PROG) $(PROG).cpp -std=c++0x -ltbb $(LIBS) 
 
 debug: *.cpp
-	$(CXX) -O0 -g -DTBB_USE_DEBUG $(CXXFLAGS) -o $(PROG) $(PROG).cpp -ltbb_debug $(LIBS) $(CXX0XFLAGS)
+	$(CXX) -O0 -g -DTBB_USE_DEBUG $(CXXFLAGS) -o $(PROG) $(PROG).cpp -std=c++0x -ltbb_debug $(LIBS) 
 clean:
 	$(RM) $(PROG) *.o *.d
 

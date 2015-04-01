@@ -86,7 +86,7 @@ void buffered_levels( size_t concurrency, Body body ) {
                 // Do the test with varying numbers of senders
                 harness_counting_sender<InputType> *senders = NULL;
                 for (size_t num_senders = 1; num_senders <= MAX_NODES; ++num_senders ) {
-                    // Create num_senders senders, set there message limit each to N, and connect them to the exe_vec[node_idx]
+                    // Create num_senders senders, set their message limit each to N, and connect them to the exe_vec[node_idx]
                     senders = new harness_counting_sender<InputType>[num_senders];
                     for (size_t s = 0; s < num_senders; ++s ) {
                         senders[s].my_limit = N;
@@ -425,10 +425,12 @@ void run_multiport_test(int num_threads) {
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
     ASSERT(mo_node.predecessor_count() == 0, NULL);
     ASSERT(tbb::flow::output_port<0>(mo_node).successor_count() == 1, NULL);
-    std::vector< tbb::flow::receiver<EvenType> *> my_0succs;
+    typedef typename mo_node_type::output_ports_type oports_type;
+    typedef typename tbb::flow::tuple_element<0,oports_type>::type port0_type;
+    typename port0_type::successor_list_type my_0succs;
     tbb::flow::output_port<0>(mo_node).copy_successors(my_0succs);
     ASSERT(my_0succs.size() == 1, NULL);
-    typename mo_node_type::predecessor_vector_type my_preds;
+    typename mo_node_type::predecessor_list_type my_preds;
     mo_node.copy_predecessors(my_preds);
     ASSERT(my_preds.size() == 0, NULL);
 #endif

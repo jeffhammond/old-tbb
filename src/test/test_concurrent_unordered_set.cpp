@@ -21,6 +21,10 @@
 #include "harness_defs.h"
 #if !(__TBB_TEST_SECONDARY && __TBB_CPP11_STD_PLACEHOLDERS_LINKAGE_BROKEN)
 
+#if _MSC_VER
+#define _SCL_SECURE_NO_WARNINGS
+#endif
+
 #define __TBB_EXTRA_DEBUG 1
 #include "tbb/concurrent_unordered_set.h"
 #include "harness_assert.h"
@@ -50,6 +54,7 @@ bool operator==(tbb::concurrent_unordered_multiset<T> const& lhs, tbb::concurren
 
 typedef tbb::concurrent_unordered_set<int, tbb::tbb_hash<int>, std::equal_to<int>, MyAllocator> MySet;
 typedef tbb::concurrent_unordered_set<check_type<int>, tbb::tbb_hash<check_type<int> >, std::equal_to<check_type<int> >, MyAllocator> MyCheckedSet;
+typedef tbb::concurrent_unordered_set<FooWithAssign, tbb::tbb_hash<Foo>, std::equal_to<FooWithAssign>, MyAllocator> MyCheckedStateSet;
 typedef tbb::concurrent_unordered_multiset<int, tbb::tbb_hash<int>, std::equal_to<int>, MyAllocator> MyMultiSet;
 typedef tbb::concurrent_unordered_multiset<check_type<int>, tbb::tbb_hash<check_type<int> >, std::equal_to<check_type<int> >, MyAllocator> MyCheckedMultiSet;
 
@@ -156,6 +161,8 @@ void TestTypes( ) {
     std::list< std::weak_ptr<int> > arrWk;
     std::copy( arrShr.begin( ), arrShr.end( ), std::back_inserter( arrWk ) );
     TestTypesSet</*defCtorPresent = */true>( arrWk );
+#else
+    REPORT( "Known issue: C++11 smart pointer tests are skipped.\n" );
 #endif /* __TBB_CPP11_SMART_POINTERS_PRESENT */
 }
 #endif // __TBB_TEST_SECONDARY
@@ -198,6 +205,7 @@ int TestMain() {
 
     { Check<MyCheckedSet::value_type> checkit; test_basic<MyCheckedSet>( "concurrent_unordered_set (checked)" ); }
     { Check<MyCheckedSet::value_type> checkit; test_concurrent<MyCheckedSet>( "concurrent unordered set (checked)" ); }
+    test_basic<MyCheckedStateSet>("concurrent unordered set (checked element state)", tbb::internal::true_type());
 
     { Check<MyCheckedMultiSet::value_type> checkit; test_basic<MyCheckedMultiSet>("concurrent_unordered_multiset (checked)"); }
     { Check<MyCheckedMultiSet::value_type> checkit; test_concurrent<MyCheckedMultiSet>( "concurrent unordered multiset (checked)" ); }
@@ -224,4 +232,4 @@ int TestMain() {
     return Harness::Done;
 }
 #endif //#if !__TBB_TEST_SECONDARY
-#endif //!(__TBB_TEST_SECONDARY && __TBB_CPP11_STD_PLACEHOLDERS_LINKING_BROKEN)
+#endif //!(__TBB_TEST_SECONDARY && __TBB_CPP11_STD_PLACEHOLDERS_LINKAGE_BROKEN)

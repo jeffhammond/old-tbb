@@ -46,9 +46,10 @@ public:
     typedef tbb::flow::sender<T> predecessor_type;
 
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
+    typedef typename tbb::flow::receiver<T>::predecessor_list_type predecessor_list_type;
     void internal_add_built_predecessor( predecessor_type & ) { }
     void internal_delete_built_predecessor( predecessor_type & ) { }
-    void copy_predecessors( std::vector<predecessor_type *> & ) { }
+    void copy_predecessors( predecessor_list_type & ) { }
     size_t predecessor_count() { return 0; }
 #endif
 
@@ -141,7 +142,7 @@ void test_single_dest() {
    tbb::flow::make_edge( src2, dest2 );
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
    ASSERT(src2.successor_count() == 1, NULL);
-   typename tbb::flow::source_node<T>::successor_vector_type my_succs;
+   typename tbb::flow::source_node<T>::successor_list_type my_succs;
    src2.copy_successors(my_succs);
    ASSERT(my_succs.size() == 1, NULL);
 #endif
@@ -167,7 +168,8 @@ void test_extract() {
     tbb::flow::tuple<int,int> dont_care;
     tbb::flow::graph g;
     typedef tbb::flow::source_node<int> snode_type;
-    tbb::flow::source_node<int> s0(g, source_body<int>(counts), /*is_active*/false ); 
+    typedef snode_type::successor_list_type successor_list_type;
+    snode_type s0(g, source_body<int>(counts), /*is_active*/false ); 
     tbb::flow::join_node< tbb::flow::tuple<int,int>, tbb::flow::reserving > j0(g);
     tbb::flow::join_node< tbb::flow::tuple<int,int>, tbb::flow::reserving > j1(g);
     tbb::flow::join_node< tbb::flow::tuple<int,int>, tbb::flow::reserving > j2(g);
@@ -210,11 +212,11 @@ void test_extract() {
     /*         +    */
 
     // do all joins appear in successor list?
-    std::vector<tbb::flow::receiver<int>*> jv1;
+    successor_list_type jv1;
     jv1.push_back(&(tbb::flow::get<0>(j0.input_ports())));
     jv1.push_back(&(tbb::flow::get<0>(j1.input_ports())));
     jv1.push_back(&(tbb::flow::get<0>(j2.input_ports())));
-    tbb::flow::source_node<int>::successor_vector_type sv;
+    snode_type::successor_list_type sv;
     s0.copy_successors(sv);
     ASSERT(lists_match(sv, jv1), "mismatch in successor list");
 

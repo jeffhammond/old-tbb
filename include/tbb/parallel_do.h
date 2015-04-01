@@ -22,6 +22,7 @@
 #define __TBB_parallel_do_H
 
 #include "internal/_range_iterator.h"
+#include "internal/_template_helpers.h"
 #include "task.h"
 #include "aligned_space.h"
 #include <iterator>
@@ -32,26 +33,6 @@ namespace tbb {
 namespace internal {
     template<typename Body, typename Item> class parallel_do_feeder_impl;
     template<typename Body> class do_group_task;
-
-    //! Strips its template type argument from 'cv' and '&' qualifiers
-    template<typename T>
-    struct strip { typedef T type; };
-    template<typename T>
-    struct strip<T&> { typedef T type; };
-    template<typename T>
-    struct strip<const T&> { typedef T type; };
-    template<typename T>
-    struct strip<volatile T&> { typedef T type; };
-    template<typename T>
-    struct strip<const volatile T&> { typedef T type; };
-    // Most of the compilers remove cv-qualifiers from non-reference function argument types. 
-    // But unfortunately there are those that don't.
-    template<typename T>
-    struct strip<const T> { typedef T type; };
-    template<typename T>
-    struct strip<volatile T> { typedef T type; };
-    template<typename T>
-    struct strip<const volatile T> { typedef T type; };
 } // namespace internal
 //! @endcond
 

@@ -198,6 +198,7 @@ TEST_TBB_PLAIN.EXE = test_assembly.$(TEST_EXT)   \
 	test_tagged_msg.$(TEST_EXT)                  \
 	test_partitioner_whitebox.$(TEST_EXT)        \
 	test_flow_graph_whitebox.$(TEST_EXT)         \
+	test_composite_node.$(TEST_EXT)              \
 	test_tbb_version.$(TEST_EXT)                 # insert new files right above
 
 TEST_TBB_PLAIN.EXE += $(TEST_TBB_CPP11)

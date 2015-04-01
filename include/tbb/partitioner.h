@@ -52,6 +52,7 @@
 #include "task.h"
 #include "aligned_space.h"
 #include "atomic.h"
+#include "internal/_template_helpers.h"
 
 #if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
     // Workaround for overzealous compiler warnings
@@ -333,10 +334,6 @@ struct adaptive_partition_type_base : partition_type_base<Partition> {
     }
     depth_t max_depth() { return my_max_depth; }
 };
-
-//! Helper that enables one or the other code branches (see example in is_splittable_in_proportion)
-template<bool C, typename T = void> struct enable_if { typedef T type; };
-template<typename T> struct enable_if<false, T> { };
 
 //! Class determines whether template parameter has static boolean constant
 //! 'is_splittable_in_proportion' initialized with value of 'true' or not.

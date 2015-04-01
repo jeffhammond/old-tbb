@@ -121,14 +121,7 @@ using namespace std;
 #include <string>
 #endif
 
-template<typename T>
-static inline T alignDown(T arg, uintptr_t alignment) {
-    return T( (uintptr_t)arg  & ~(alignment-1));
-}
-template<typename T>
-static inline T alignUp(T arg, uintptr_t alignment) {
-    return T(((uintptr_t)arg+(alignment-1)) & ~(alignment-1));
-}
+#include "../tbbmalloc/shared_utils.h"  // alignDown, alignUp, estimatedCacheLineSize
 
 /* start of code replicated from src/tbbmalloc */
 
@@ -180,13 +173,8 @@ struct LargeObjectHdr {
  * Objects of size minLargeObjectSize and larger are considered large objects.
  */
 const uintptr_t blockSize = 16*1024;
-#if __powerpc64__ || __ppc64__ || __bgp__
-const int estimatedCacheLineSize = 128;
-#else
-const int estimatedCacheLineSize =  64;
-#endif
-const uint32_t fittingAlignment = estimatedCacheLineSize;
-#define SET_FITTING_SIZE(N) ( (blockSize-2*estimatedCacheLineSize)/N ) & ~(fittingAlignment-1)
+const uint32_t fittingAlignment = rml::internal::estimatedCacheLineSize;
+#define SET_FITTING_SIZE(N) ( (blockSize-2*rml::internal::estimatedCacheLineSize)/N ) & ~(fittingAlignment-1)
 const uint32_t fittingSize5 = SET_FITTING_SIZE(2); // 8128/8064
 #undef SET_FITTING_SIZE
 const uint32_t minLargeObjectSize = fittingSize5 + 1;

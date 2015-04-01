@@ -57,34 +57,28 @@
 #endif
 
 #if __INTEL_COMPILER
-  #define __TBB_LAMBDAS_PRESENT ( _TBB_CPP0X && __INTEL_COMPILER > 1100 )
-  #define __TBB_CPP11_SMART_POINTERS_PRESENT ( _TBB_CPP0X && __INTEL_COMPILER >= 1200 && \
-    ( _MSC_VER >= 1600 || __TBB_GCC_VERSION >= 40400 || ( __clang__ && __cplusplus >= 201103L ) ) )
   #define __TBB_CPP11_REFERENCE_WRAPPER_PRESENT ( _TBB_CPP0X && __INTEL_COMPILER >= 1200 && \
     ( _MSC_VER >= 1600 || __TBB_GCC_VERSION >= 40400 || ( __clang__ && __cplusplus >= 201103L ) ) )
   #define __TBB_RANGE_BASED_FOR_PRESENT ( _TBB_CPP0X && __INTEL_COMPILER >= 1300 )
   #define __TBB_SCOPED_ENUM_PRESENT ( _TBB_CPP0X && __INTEL_COMPILER > 1100 )
 #elif __clang__
-  #define __TBB_LAMBDAS_PRESENT ( _TBB_CPP0X && __has_feature(cxx_lambdas) )
-  #define __TBB_CPP11_SMART_POINTERS_PRESENT ( _TBB_CPP0X && __cplusplus >= 201103L && (__TBB_GCC_VERSION >= 40400 || _LIBCPP_VERSION) )
   #define __TBB_CPP11_REFERENCE_WRAPPER_PRESENT ( _TBB_CPP0X && __cplusplus >= 201103L && (__TBB_GCC_VERSION >= 40400 || _LIBCPP_VERSION) )
   #define __TBB_RANGE_BASED_FOR_PRESENT ( _TBB_CPP0X && __has_feature(__cxx_range_for) )
   #define __TBB_SCOPED_ENUM_PRESENT ( _TBB_CPP0X && __has_feature(cxx_strong_enums) )
 #elif __GNUC__
-  #define __TBB_LAMBDAS_PRESENT ( _TBB_CPP0X && __TBB_GCC_VERSION >= 40500 )
-  #define __TBB_CPP11_SMART_POINTERS_PRESENT ( _TBB_CPP0X && __TBB_GCC_VERSION >= 40400 )
   #define __TBB_CPP11_REFERENCE_WRAPPER_PRESENT ( _TBB_CPP0X && __TBB_GCC_VERSION >= 40400 )
   #define __TBB_RANGE_BASED_FOR_PRESENT ( _TBB_CPP0X && __TBB_GCC_VERSION >= 40500 )
   #define __TBB_SCOPED_ENUM_PRESENT ( _TBB_CPP0X && __TBB_GCC_VERSION >= 40400 )
 #elif _MSC_VER
-  #define __TBB_LAMBDAS_PRESENT ( _MSC_VER >= 1600 )
-  #define __TBB_CPP11_SMART_POINTERS_PRESENT ( _MSC_VER >= 1600 )
   #define __TBB_CPP11_REFERENCE_WRAPPER_PRESENT ( _MSC_VER >= 1600 )
   #define __TBB_RANGE_BASED_FOR_PRESENT ( _MSC_VER >= 1700 )
   #define __TBB_SCOPED_ENUM_PRESENT ( _MSC_VER >= 1700 )
 #endif
 
-#define __TBB_TEST_SKIP_LAMBDA (__TBB_ICC_13_0_CPP11_STDLIB_SUPPORT_BROKEN || !__TBB_LAMBDAS_PRESENT)
+//Due to libc++ limitations in C++03 mode, do not pass rvalues to std::make_shared()
+#define __TBB_CPP11_SMART_POINTERS_PRESENT ( _MSC_VER >= 1600 || _TBB_CPP0X && __TBB_GCC_VERSION >= 40400 || _LIBCPP_VERSION)
+#define __TBB_LAMBDAS_PRESENT __TBB_CPP11_LAMBDAS_PRESENT // TODO: replace the old macro in tests
+#define __TBB_TEST_SKIP_LAMBDA (__TBB_ICC_13_0_CPP11_STDLIB_SUPPORT_BROKEN || !__TBB_CPP11_LAMBDAS_PRESENT)
 
 #if __GNUC__ && __ANDROID__
   /** Android GCC does not support _thread keyword **/

@@ -2,6 +2,38 @@
 The list of most significant changes made over time in
 Intel(R) Threading Building Blocks (Intel(R) TBB).
 ------------------------------------------------------------------------
+Intel TBB 4.3 Update 4
+TBB_INTERFACE_VERSION == 8004
+
+Changes (w.r.t. Intel TBB 4.3 Update 3):
+- Added a C++11 variadic constructor for enumerable_thread_specific.
+    The arguments from this constructor are used to construct
+    thread-local values.
+- Improved exception safety for enumerable_thread_specific.
+- Added documentation for tbb::flow::tagged_msg class and
+    tbb::flow::output_port function.
+- Fixed build errors for systems that do not support dynamic linking.
+- C++11 move aware insert and emplace methods have been added to
+    concurrent unordered containers.
+
+Preview Features:
+- Interface-breaking change: typedefs changed for node predecessor and
+    successor lists, affecting copy_predecessors and copy_successors
+    methods.
+- Added template class composite_node to the flow graph API. It packages
+    a subgraph to represent it as a first-class flow graph node.
+- make_edge and remove_edge now accept multiport nodes as arguments,
+    automatically using the node port with index 0 for an edge.
+
+Open-source contributions integrated:
+- Draft code for enumerable_thread_specific constructor with multiple
+    arguments (see above) by Adrien Guinet.
+- Fix for GCC invocation on IBM* Blue Gene*
+    by Jeff Hammond and Raf Schietekat.
+- Extended testing with smart pointers for Clang & libc++
+    by Raf Schietekat.
+
+------------------------------------------------------------------------
 Intel TBB 4.3 Update 3
 TBB_INTERFACE_VERSION == 8003
 

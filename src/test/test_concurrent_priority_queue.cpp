@@ -1036,7 +1036,10 @@ void TestTypes() {
 
 #if __TBB_CPP11_SMART_POINTERS_PRESENT
     std::vector< std::shared_ptr<int> > arrShr;
-    for (int i = 0; i<NUMBER; ++i) arrShr.push_back(std::make_shared<int>(rnd.get()));
+    for (int i = 0; i<NUMBER; ++i) {
+        const int rnd_get = rnd.get();
+        arrShr.push_back(std::make_shared<int>(rnd_get));
+    }
     std::vector< std::weak_ptr<int> > arrWk;
     std::copy(arrShr.begin(), arrShr.end(), std::back_inserter(arrWk));
     TypeTester(arrShr, SmartPointersCompare());

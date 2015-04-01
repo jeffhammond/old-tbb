@@ -19,6 +19,10 @@
 */
 
 #define __TBB_EXTRA_DEBUG 1
+#if _MSC_VER
+#define _SCL_SECURE_NO_WARNINGS
+#endif
+
 #include "tbb/concurrent_unordered_map.h"
 #if __TBB_INITIALIZER_LISTS_PRESENT
 // These operator== are used implicitly in  test_initializer_list.h.
@@ -39,6 +43,7 @@ bool operator==( tbb::concurrent_unordered_multimap<Key, Value> const& lhs, tbb:
 
 typedef tbb::concurrent_unordered_map<int, int, tbb::tbb_hash<int>, std::equal_to<int>, MyAllocator> MyMap;
 typedef tbb::concurrent_unordered_map<int, check_type<int>, tbb::tbb_hash<int>, std::equal_to<int>, MyAllocator> MyCheckedMap;
+typedef tbb::concurrent_unordered_map<int, FooWithAssign, tbb::tbb_hash<int>, std::equal_to<int>, MyAllocator> MyCheckedStateMap;
 typedef tbb::concurrent_unordered_multimap<int, int, tbb::tbb_hash<int>, std::equal_to<int>, MyAllocator> MyMultiMap;
 typedef tbb::concurrent_unordered_multimap<int, check_type<int>, tbb::tbb_hash<int>, std::equal_to<int>, MyAllocator> MyCheckedMultiMap;
 
@@ -182,7 +187,7 @@ void TestRangeBasedFor() {
 
     ASSERT( range_based_for_accumulate( a_cu_map, pair_second_summer(), 0 ) == gauss_summ_of_int_sequence( sequence_length ), "incorrect accumulated value generated via range based for ?" );
 }
-#endif //if __TBB_RANGE_BASED_FOR_PRESENT
+#endif /* __TBB_RANGE_BASED_FOR_PRESENT */
 
 #if __TBB_CPP11_RVALUE_REF_PRESENT
 struct cu_map_type : unordered_move_traits_base {
@@ -267,12 +272,17 @@ void TestTypes() {
 
 #if __TBB_CPP11_SMART_POINTERS_PRESENT
     std::list< std::pair< const std::shared_ptr<int>, std::shared_ptr<int> > > arrShrShr;
-    for ( int i = 0; i < NUMBER; ++i ) arrShrShr.push_back( std::make_pair( std::make_shared<int>( i ), std::make_shared<int>( NUMBER - i ) ) );
+    for ( int i = 0; i < NUMBER; ++i ) {
+        const int NUMBER_minus_i = NUMBER - i;
+        arrShrShr.push_back( std::make_pair( std::make_shared<int>( i ), std::make_shared<int>( NUMBER_minus_i ) ) );
+    }
     TestTypesMap</*defCtorPresent = */true>( arrShrShr );
 
     std::list< std::pair< const std::weak_ptr<int>, std::weak_ptr<int> > > arrWkWk;
     std::copy( arrShrShr.begin(), arrShrShr.end(), std::back_inserter( arrWkWk ) );
     TestTypesMap</*defCtorPresent = */true>( arrWkWk );
+#else
+    REPORT( "Known issue: C++11 smart pointer tests are skipped.\n" );
 #endif /* __TBB_CPP11_SMART_POINTERS_PRESENT */
 }
 
@@ -287,6 +297,7 @@ int TestMain() {
 
     { Check<MyCheckedMap::value_type> checkit; test_basic<MyCheckedMap>( "concurrent unordered map (checked)" ); }
     { Check<MyCheckedMap::value_type> checkit; test_concurrent<MyCheckedMap>( "concurrent unordered map (checked)" ); }
+    test_basic<MyCheckedStateMap>("concurrent unordered map (checked state of elements)", tbb::internal::true_type());
 
     { Check<MyCheckedMultiMap::value_type> checkit; test_basic<MyCheckedMultiMap>( "concurrent unordered MultiMap (checked)" ); }
     { Check<MyCheckedMultiMap::value_type> checkit; test_concurrent<MyCheckedMultiMap>( "concurrent unordered MultiMap (checked)" ); }
@@ -302,8 +313,8 @@ int TestMain() {
 
 #if __TBB_CPP11_RVALUE_REF_PRESENT
     test_rvalue_ref_support<cu_map_type>( "concurrent unordered map" );
-    test_rvalue_ref_support<cu_multimap_type>( "concurrent unordered multiset" );
-#endif //__TBB_CPP11_RVALUE_REF_PRESENT
+    test_rvalue_ref_support<cu_multimap_type>( "concurrent unordered multimap" );
+#endif /* __TBB_CPP11_RVALUE_REF_PRESENT */
     
     TestTypes();
 

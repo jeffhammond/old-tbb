@@ -95,8 +95,8 @@ ifeq (ppc32,$(arch))
 endif
 
 ifeq (bg,$(arch))
-    CPLUS = mpicxx
-    CONLY = mpicc
+    CPLUS = $(firstword $(notdir $(shell which powerpc{64,32,}-bg{z..a}-linux-g++ 2>/dev/null)))
+    CONLY = $(firstword $(notdir $(shell which powerpc{64,32,}-bg{z..a}-linux-gcc 2>/dev/null)))
 endif
 
 # for some gcc versions on Solaris, -m64 may imply V9, but perhaps not everywhere (TODO: verify)

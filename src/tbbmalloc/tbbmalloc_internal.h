@@ -110,19 +110,6 @@ const uintptr_t slabSize = 16*1024;
 const unsigned cacheCleanupFreq = 256;
 
 /*
- * Best estimate of cache line size, for the purpose of avoiding false sharing.
- * Too high causes memory overhead, too low causes false-sharing overhead.
- * Because, e.g., 32-bit code might run on a 64-bit system with a larger cache line size,
- * it would probably be better to probe at runtime where possible and/or allow for an environment variable override,
- * but currently this is still used for compile-time layout of class Block, so the change is not entirely trivial.
- */
-#if __powerpc64__ || __ppc64__ || __bgp__
-const uint32_t estimatedCacheLineSize = 128;
-#else
-const uint32_t estimatedCacheLineSize =  64;
-#endif
-
-/*
  * Alignment of large (>= minLargeObjectSize) objects.
  */
 const size_t largeObjectAlignment = estimatedCacheLineSize;

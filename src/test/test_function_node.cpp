@@ -274,10 +274,10 @@ void concurrency_levels( size_t concurrency, Body body ) {
         }
 #if TBB_PREVIEW_FLOW_GRAPH_FEATURES
         ASSERT(exe_node.successor_count() == num_receivers, NULL);
-        typename fnode_type::successor_vector_type my_succs;
+        typename fnode_type::successor_list_type my_succs;
         exe_node.copy_successors(my_succs);
         ASSERT(my_succs.size() == num_receivers, NULL);
-        typename fnode_type::predecessor_vector_type my_preds;
+        typename fnode_type::predecessor_list_type my_preds;
         exe_node.copy_predecessors(my_preds);
         ASSERT(my_preds.size() == 0, NULL);
 #endif
