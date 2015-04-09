@@ -190,6 +190,9 @@ private:
 #else /* Linux/Unix */
 
 #if __TBB_USE_FUTEX
+#ifdef __bgq__
+#error On BGQ, __TBB_USE_FUTEX should be disabled in linux_common.h 
+#endif
 class binary_semaphore : no_copy {
 public:
     //! ctor
