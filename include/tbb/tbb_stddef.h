@@ -26,7 +26,7 @@
 #define TBB_VERSION_MINOR 3
 
 // Engineering-focused interface version
-#define TBB_INTERFACE_VERSION 8004
+#define TBB_INTERFACE_VERSION 8005
 #define TBB_INTERFACE_VERSION_MAJOR TBB_INTERFACE_VERSION/1000
 
 // The oldest major interface version still supported
@@ -130,22 +130,13 @@
 //! Type for an assertion handler
 typedef void(*assertion_handler_type)( const char* filename, int line, const char* expression, const char * comment );
 
-#if TBB_USE_ASSERT
-
-    //! Assert that x is true.
-    #define __TBB_ASSERT_NS(predicate,message,ns) ((predicate)?((void)0) : ns::assertion_failure(__FILE__,__LINE__,#predicate,message))
-    /** If x is false, print assertion failure message.
-        If the comment argument is not NULL, it is printed as part of the failure message.
-        The comment argument has no other effect. */
-
 #if __TBBMALLOC_BUILD
 namespace rml { namespace internal {
-    #define __TBB_ASSERT(predicate,message) __TBB_ASSERT_NS(predicate,message,rml::internal)
+ #define __TBB_ASSERT_RELEASE(predicate,message) ((predicate)?((void)0) : rml::internal::assertion_failure(__FILE__,__LINE__,#predicate,message))
 #else
 namespace tbb {
-    #define __TBB_ASSERT(predicate,message) __TBB_ASSERT_NS(predicate,message,tbb)
+ #define __TBB_ASSERT_RELEASE(predicate,message) ((predicate)?((void)0) : tbb::assertion_failure(__FILE__,__LINE__,#predicate,message))
 #endif
-    #define __TBB_ASSERT_EX __TBB_ASSERT
 
     //! Set assertion handler and return previous value of it.
     assertion_handler_type __TBB_EXPORTED_FUNC set_assertion_handler( assertion_handler_type new_handler );
@@ -161,6 +152,16 @@ namespace tbb {
 #else
 } // namespace tbb
 #endif
+
+#if TBB_USE_ASSERT
+
+    //! Assert that x is true.
+    /** If x is false, print assertion failure message.
+        If the comment argument is not NULL, it is printed as part of the failure message.
+        The comment argument has no other effect. */
+    #define __TBB_ASSERT(predicate,message) __TBB_ASSERT_RELEASE(predicate,message)
+
+    #define __TBB_ASSERT_EX __TBB_ASSERT
 
 #else /* !TBB_USE_ASSERT */
 

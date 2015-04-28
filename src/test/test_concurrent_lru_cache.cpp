@@ -95,7 +95,7 @@ namespace helpers{
     template <typename counter_type = size_t>
     struct object_instances_counting_type{
         counter_type * m_p_count;
-        object_instances_counting_type(): m_p_count (new counter_type){*m_p_count =1; } //to overcome absense of constructor in tbb::atomic
+        object_instances_counting_type(): m_p_count (new counter_type){*m_p_count =1; } //to overcome absence of constructor in tbb::atomic
         ~object_instances_counting_type(){ if (! --(*m_p_count)){delete(m_p_count);}}
         object_instances_counting_type(object_instances_counting_type const& other): m_p_count(other.m_p_count){
             ++(*m_p_count);

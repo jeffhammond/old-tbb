@@ -613,6 +613,7 @@ FreeBlock *Backend::askMemFromOS(size_t blockSize, intptr_t startModifiedCnt,
     // leads to excessive address space consumption). If a region is "too
     // large", allocate only one, to prevent fragmentation. It supposedly
     // doesn't hurt performance, because the object requested by user is large.
+    // Bounds for the groups are:
     const size_t maxBinned = getMaxBinnedSize();
     const size_t quiteSmall = maxBinned / 8;
     const size_t quiteLarge = maxBinned;
@@ -621,11 +622,15 @@ FreeBlock *Backend::askMemFromOS(size_t blockSize, intptr_t startModifiedCnt,
         // Do not interact with other threads via semaphors, as for exact fit
         // we can't share regions with them, memory requesting is individual.
         block = addNewRegion(blockSize, MEMREG_ONE_BLOCK, /*addToBin=*/false);
-        // last chance to get memory
-        if (!block && extMemPool->hardCachesCleanup())
-            return (FreeBlock*)VALID_BLOCK_IN_BIN;
-        if (block)
-            *splittableRet = false;
+        if (!block) {  // last chance to get memory:
+                    // 1) from cleanups
+            return (extMemPool->hardCachesCleanup()
+                    // 2) some "in the fly" blocks
+                    || bkndSync.waitTillBlockReleased(startModifiedCnt))?
+                (FreeBlock*)VALID_BLOCK_IN_BIN
+                : NULL;
+        }
+        *splittableRet = false;
     } else {
         const size_t regSz_sizeBased = alignUp(4*maxRequestedSize, 1024*1024);
         // Another thread is modifying backend while we can't get the block.

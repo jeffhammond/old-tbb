@@ -103,7 +103,7 @@ LRESULT CALLBACK InternalWndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
                 Sleep(0);
             }
             break;
-        // Proccess all mouse and keyboard events
+        // Process all mouse and keyboard events
         case WM_LBUTTONDOWN:    mouse( 1, lParam ); break;
         case WM_LBUTTONUP:      mouse(-1, lParam ); break;
         case WM_RBUTTONDOWN:    mouse( 2, lParam ); break;

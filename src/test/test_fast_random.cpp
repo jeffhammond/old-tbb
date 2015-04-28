@@ -28,10 +28,8 @@
 #define HARNESS_DEFAULT_MIN_THREADS 2
 #define HARNESS_DEFAULT_MAX_THREADS 32
 
-#include <algorithm> // include it first to avoid error on define below
-#define private public
+#define HARNESS_DEFINE_PRIVATE_PUBLIC 1
 #include "harness_inject_scheduler.h"
-#undef private
 
 #define TEST_TOTAL_SEQUENCE 0
 

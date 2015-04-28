@@ -605,7 +605,7 @@ void CMemTest::AddrArifm()
         if (NULL!=tmpAddr) {
             arr[i].ptr = tmpAddr;
             arr[i].size = count;
-        } else if (count==0) { // becasue realloc(..., 0) works as free
+        } else if (count==0) { // because realloc(..., 0) works as free
             arr[i].ptr = NULL;
             arr[i].size = 0;
         }

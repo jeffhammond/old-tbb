@@ -46,6 +46,7 @@
 
 #include <cstdarg>
 
+// Need to include "tbb/tbb_config.h" to obtain the definition of __TBB_DEFINE_MIC.
 #include "tbb/tbb_config.h"
 
 #if __TBB_DEFINE_MIC

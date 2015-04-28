@@ -49,9 +49,6 @@ extern "C" void callDll()
     }
     for (int i=0; i<NUM; i++)
         scalable_free(ptrs[i]);
-#if __TBB_SOURCE_DIRECTLY_INCLUDED && (_WIN32||_WIN64)
-    __TBB_mallocThreadShutdownNotification();
-#endif
 }
 
 #if __TBB_SOURCE_DIRECTLY_INCLUDED

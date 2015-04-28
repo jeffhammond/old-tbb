@@ -388,4 +388,9 @@ __TBB_SYMBOL( _ZN3tbb8internal7move_v3ERNS0_13tbb_thread_v3ES2_ )
 __TBB_SYMBOL( _ZN3tbb8internal15thread_yield_v3Ev )
 __TBB_SYMBOL( _ZN3tbb8internal15thread_sleep_v3ERKNS_10tick_count10interval_tE )
 
+// global parameter
+__TBB_SYMBOL( _ZN3tbb10interface914global_control12active_valueEi )
+__TBB_SYMBOL( _ZN3tbb10interface914global_control15internal_createEv )
+__TBB_SYMBOL( _ZN3tbb10interface914global_control16internal_destroyEv )
+
 #undef __TBB_SYMBOL

@@ -237,12 +237,6 @@ public:
             scalable_free(objsSmall[i]);
             scalable_free(objsLarge[i]);
         }
-#ifdef USE_WINTHREAD
-        // Under Windows DllMain is used for mallocThreadShutdownNotification
-        // calling. As DllMain is not used during whitebox testing,
-        // we have to call the callback manually.
-        __TBB_mallocThreadShutdownNotification();
-#endif
     }
 };
 
@@ -782,7 +776,7 @@ struct TestCleanAllBuffersDeallocate : public SimpleBarrier {
 };
 
 // The idea is to allocate a set of objects and then deallocate them in random
-// order in parallel to force occuring conflicts in backend during coalescing.
+// order in parallel to force occurring conflicts in backend during coalescing.
 // Thus if the backend does not check the queue of postponed coalescing
 // requests it will not be able to unmap all memory and a memory leak will be
 // observed.

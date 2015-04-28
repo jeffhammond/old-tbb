@@ -535,7 +535,7 @@ static tbb::runtime_loader::error_code load( tbb::runtime_loader::error_mode mod
 
 
 
-// Supress "defined but not used" compiler warnings.
+// Suppress "defined but not used" compiler warnings.
 static void const * dummy[] = {
     (void *) & strip,
     (void *) & trim,

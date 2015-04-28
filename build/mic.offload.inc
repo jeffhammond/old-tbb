@@ -111,7 +111,7 @@ else
   # Add the dependency on target libraries
   $(call addsuffixes, _debug _release,$(LIB_TARGETS)): %: %_mic
 
-  # tbb_build_prefix should be overriden since we want to restart make in "clear" enviroment
+  # tbb_build_prefix should be overriden since we want to restart make in "clear" environment
   $(call addsuffixes, _debug_mic _release_mic,$(LIB_TARGETS)): override tbb_build_prefix=
   $(call addsuffixes, _debug_mic _release_mic,$(LIB_TARGETS)): %_mic:
 	@$(MAKE) --no-print-directory -C "$(full_tbb_root)/src" $* target=mic tbb_root=..

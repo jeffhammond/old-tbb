@@ -21,7 +21,7 @@
 // Test mixing OpenMP and TBB
 
 /* SCR #471 
- Below is workaround to compile test within enviroment of Intel Compiler
+ Below is workaround to compile test within environment of Intel Compiler
  but by Microsoft Compiler. So, there is wrong "omp.h" file included and
  manifest section is missed from .exe file - restoring here.
 

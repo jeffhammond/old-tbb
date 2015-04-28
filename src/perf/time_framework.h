@@ -75,7 +75,7 @@ protected:
     char pad[128 - sizeof(arg_t) - sizeof(int)*2 - sizeof(void*)*2 ];
 
 public:
-    //! init tester base. @arg ntests is number of embeded tests in this tester.
+    //! init tester base. @arg ntests is number of embedded tests in this tester.
     TesterBase(int ntests)
         : barrier(NULL), tests_count(ntests)
     {}

@@ -82,7 +82,7 @@
 //! Dump statistics for an arena when its master completes
 /** By default (when this macro is not set) the statistics is sent to output when
     arena object is destroyed. But with the current lazy workers termination
-    logic default behavior may result in loosing all statistics output. **/
+    logic default behavior may result in losing all statistics output. **/
 #define __TBB_STATISTICS_EARLY_DUMP 1
 
 #define GATHER_STATISTIC(x) (x)

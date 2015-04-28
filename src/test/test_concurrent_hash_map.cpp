@@ -371,7 +371,7 @@ struct FakeExclusive : NoAssign {
     void operator()( int i ) const {
         if(i) {
             YourTable::const_accessor real_ca;
-            // const accessor on non-const table aquired as reader (shared)
+            // const accessor on non-const table acquired as reader (shared)
             ASSERT( table.find(real_ca,MyKey::make(1)), NULL );
             barrier.wait(); // item can be erased
             Harness::Sleep(10); // let it enter the erase
@@ -379,9 +379,9 @@ struct FakeExclusive : NoAssign {
         } else {
             YourTable::accessor fake_ca;
             const YourTable &const_table = table;
-            // non-const accessor on const table aquired as reader (shared)
+            // non-const accessor on const table acquired as reader (shared)
             ASSERT( const_table.find(fake_ca,MyKey::make(1)), NULL );
-            barrier.wait(); // readers aquired
+            barrier.wait(); // readers acquired
             // can mistakenly remove the item while other readers still refers to it
             table.erase( fake_ca );
         }

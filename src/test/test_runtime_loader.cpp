@@ -132,7 +132,7 @@ int TestMain() {
         }
 
         {
-            SAY( "Create a proxy object and call load() with good arguments but not availabe version." );
+            SAY( "Create a proxy object and call load() with good arguments but not available version." );
             char const * path[] = { ".", NULL };
             tbb::runtime_loader rtl( tbb::runtime_loader::em_status );
             SAY( "Min version too big." );

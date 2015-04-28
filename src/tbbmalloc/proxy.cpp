@@ -457,6 +457,11 @@ const char* modules_to_replace[] = {
     "msvcr70.dll",
     "msvcr71d.dll",
     "msvcr71.dll",
+#if __TBB_TODO
+    // TODO: Try enabling replacement for non-versioned system binaries below
+    "msvcrtd.dll",
+    "msvcrt.dll",
+#endif
     };
 
 /*

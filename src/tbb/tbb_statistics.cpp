@@ -75,7 +75,7 @@ public:
         }
         __TBB_ASSERT( group_start_field[NumGroups] == statistics_counters::size(),
                       "Wrong number of elements in StatFieldTitles" );
-        dump( "%-*s", IDColumnWidth, "");
+        dump( "\n%-*s", IDColumnWidth, "");
         process_groups( &statistics_logger::print_group_title );
         dump( "%-*s", IDColumnWidth, "ID");
         process_groups( &statistics_logger::print_field_titles );

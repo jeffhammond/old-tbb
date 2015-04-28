@@ -1632,7 +1632,7 @@ activate_threads:
     if( index==request_size )
         return;
 
-    // If we come to this point, it must be becuase dynamic==false
+    // If we come to this point, it must be because dynamic==false
     // Create Oversubscribers..
 
     // Note that our policy is such that MinConcurrency==MaxConcurrency.

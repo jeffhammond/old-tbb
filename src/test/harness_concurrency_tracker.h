@@ -21,9 +21,12 @@
 #ifndef tbb_tests_harness_concurrency_tracker_H
 #define tbb_tests_harness_concurrency_tracker_H
 
-#include "harness.h"
+#include "harness_assert.h"
+#include "harness_barrier.h"
 #include "tbb/atomic.h"
 #include "../tbb/tls.h"
+// Note: This file is used by RML tests which do not link TBB
+// Thus only header-only TBB features can be included
 
 namespace Harness {
 

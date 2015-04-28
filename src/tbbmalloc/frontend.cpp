@@ -690,6 +690,7 @@ void AllLocalCaches::registerThread(TLSRemote *tls)
 void AllLocalCaches::unregisterThread(TLSRemote *tls)
 {
     MallocMutex::scoped_lock lock(listLock);
+    MALLOC_ASSERT(head, "Can't unregister thread: no threads are registered.");
     if (head == tls)
         head = tls->next;
     if (tls->next)
@@ -737,8 +738,7 @@ bool        RecursiveMallocCallProtector::canUsePthread;
 /*********** End code to provide thread ID and a TLS pointer **********/
 
 // Parameter for isLargeObject, keeps our expectations on memory origin.
-// In assertions it must be used
-// unknownMem to reliably check them for invalid objects.
+// Assertions must use unknownMem to reliably report object invalidity.
 enum MemoryOrigin {
     ourMem,    // allocated by TBB allocator
     unknownMem // can be allocated by system allocator or TBB allocator
@@ -1731,6 +1731,7 @@ void TLSData::release(MemoryPool *mPool)
  * allocations are performed by moving bump pointer and increasing of object counter,
  * releasing is done via counter of objects allocated in the block
  * or moving bump pointer if releasing object is on a bound.
+ * TODO: make bump pointer to grow to the same backward direction as all the others.
  */
 
 class StartupBlock : public Block {
@@ -2401,8 +2402,6 @@ bool isLargeObject(void *object)
     if (!isAligned(object, largeObjectAlignment))
         return false;
     LargeObjectHdr *header = (LargeObjectHdr*)object - 1;
-    // TODO: drop safer_dereference() when we know for sure that we allocated
-    // the object, i.e. on scalable_free() callpath
     BackRefIdx idx = memOrigin==unknownMem? safer_dereference(&header->backRefIdx) :
         header->backRefIdx;
 

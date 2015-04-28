@@ -330,4 +330,9 @@ __TBB_SYMBOL( ?internal_condition_variable_notify_one@internal@interface5@tbb@@Y
 __TBB_SYMBOL( ?internal_condition_variable_notify_all@internal@interface5@tbb@@YAXAATcondvar_impl_t@123@@Z )
 __TBB_SYMBOL( ?internal_destroy_condition_variable@internal@interface5@tbb@@YAXAATcondvar_impl_t@123@@Z )
 
+// global parameter
+__TBB_SYMBOL( ?active_value@global_control@interface9@tbb@@CAIH@Z )
+__TBB_SYMBOL( ?internal_create@global_control@interface9@tbb@@AAEXXZ )
+__TBB_SYMBOL( ?internal_destroy@global_control@interface9@tbb@@AAEXXZ )
+
 #undef __TBB_SYMBOL

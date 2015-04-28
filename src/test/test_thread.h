@@ -59,7 +59,6 @@ public:
     int value;
 };
 
-
 #include "harness_barrier.h"
 
 class ThreadFunc: Base {

@@ -114,6 +114,7 @@ public:
 void TestBlockNonblock()
 {
     for (int i=0; i<100; i++) {
+        REMARK("\rIteration %d ", i);
         NativeParallelFor(4, RunWorkersBody(/*wait_workers=*/false));
         RunWorkersBody(/*wait_workers=*/true)(0);
     }

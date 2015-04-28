@@ -24,6 +24,13 @@
 #ifndef harness_inject_scheduler_H
 #define harness_inject_scheduler_H
 
+#if HARNESS_DEFINE_PRIVATE_PUBLIC
+#include <string> // merely prevents LNK2019 error to happen (on ICL+VC9 configurations)
+#include <algorithm> // include it first to avoid error on define below
+#define private public
+#define protected public
+#endif
+
 // Suppress usage of #pragma comment
 #define __TBB_NO_IMPLICIT_LINKAGE 1
 
@@ -69,6 +76,11 @@ int TestMain () {
 }
 // Renaming the TestMain function avoids conditional compilation around same function in the test file
 #define TestMain TestMainSkipped
+#endif
+
+#if HARNESS_DEFINE_PRIVATE_PUBLIC
+#undef protected
+#undef private
 #endif
 
 #endif /* harness_inject_scheduler_H */

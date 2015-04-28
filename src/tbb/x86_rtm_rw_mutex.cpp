@@ -60,6 +60,7 @@ enum {
 };
 
 // maximum number of times to retry
+// TODO: experiment on retry values.
 static const int retry_threshold_read = 10;
 static const int retry_threshold_write = 10;
 

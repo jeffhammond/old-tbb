@@ -390,4 +390,9 @@ __TBB_SYMBOL( _ZN3tbb10interface58internal38internal_condition_variable_notify_o
 __TBB_SYMBOL( _ZN3tbb10interface58internal38internal_initialize_condition_variableERNS1_14condvar_impl_tE )
 #endif
 
+// global parameter
+__TBB_SYMBOL( _ZN3tbb10interface914global_control12active_valueEi )
+__TBB_SYMBOL( _ZN3tbb10interface914global_control15internal_createEv )
+__TBB_SYMBOL( _ZN3tbb10interface914global_control16internal_destroyEv )
+
 #undef __TBB_SYMBOL

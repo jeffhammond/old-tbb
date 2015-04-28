@@ -746,7 +746,7 @@ void LargeObjectCache::rollbackCacheState(size_t size)
         hugeCache.rollbackCacheState(extMemPool, size);
 }
 
-// return artifical bin index, it's used only during sorting and never saved
+// return artificial bin index, it's used only during sorting and never saved
 int LargeObjectCache::sizeToIdx(size_t size)
 {
     MALLOC_ASSERT(size < maxHugeSize, ASSERT_TEXT);

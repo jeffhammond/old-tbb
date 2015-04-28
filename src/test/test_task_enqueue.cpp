@@ -134,7 +134,7 @@ void TestEnqueue( int p ) {
         tbb::task_scheduler_init init(p);
         EnqueuedTask::nCompletedPairs = EnqueuedTask::nOrderedPairs = 0;
         for(int i=0; i<nTracks; ++i) {
-            TaskTracks[i] = -1; // to accomodate for the starting call
+            TaskTracks[i] = -1; // to accommodate for the starting call
             EnqueuedTask::FireTwoTasks(TaskTracks+i);
         }
         ProgressMonitor pm;
@@ -341,6 +341,8 @@ void TestWakeups()
     tbb::task_scheduler_init my(tbb::task_scheduler_init::deferred);
     if( tbb::task_scheduler_init::default_num_threads() <= NUM_TASKS )
         my.initialize(NUM_TASKS*2);
+    else // workaround issue #1996 for TestCascadedEnqueue
+        my.initialize(tbb::task_scheduler_init::default_num_threads()+1);
     Harness::SpinBarrier barrier(NUM_TASKS);
     REMARK("Missing wake-up: affinity_partitioner\n");
     tbb::affinity_partitioner aff;
@@ -355,9 +357,9 @@ void TestWakeups()
 }
 
 int TestMain () {
-    TestWakeups();
-    TestDequeueByMaster();
-    TestCascadedEnqueue();
+    TestWakeups();         // 1st because requests oversubscription
+    TestCascadedEnqueue(); // needs oversubscription
+    TestDequeueByMaster(); // no oversubscription needed
     for( int p=MinThread; p<=MaxThread; ++p ) {
         TestEnqueue(p);
         TestSharedRoot(p);

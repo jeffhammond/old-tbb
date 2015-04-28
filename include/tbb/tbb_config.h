@@ -29,6 +29,11 @@
     - known compiler/platform issues
 **/
 
+/* This macro marks incomplete code or comments describing ideas which are considered for the future.
+ * See also for plain comment with TODO and FIXME marks for small improvement opportunities.
+ */
+#define __TBB_TODO 0
+
 /*Check which standard library we use on OS X.*/
 /*__TBB_SYMBOL is defined only while processing exported symbols list where C++ is not allowed.*/
 #if !defined(__TBB_SYMBOL) && __APPLE__

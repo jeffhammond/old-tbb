@@ -1,6 +1,33 @@
 ------------------------------------------------------------------------
 The list of most significant changes made over time in
 Intel(R) Threading Building Blocks (Intel(R) TBB).
+
+Intel TBB 4.3 Update 5
+TBB_INTERFACE_VERSION == 8005
+
+Changes (w.r.t. Intel TBB 4.3 Update 4):
+- Added add_ref_count() method of class tbb::task.
+
+Preview Features:
+- Added class global_control for application-wide control of allowed
+    parallelism and thread stack size.
+- memory_pool_allocator now throws the std::bad_alloc exception on
+    allocation failure.
+- Exceptions thrown for by memory pool constructors changed from
+    std::bad_alloc to std::invalid_argument and std::runtime_error.
+
+Bugs fixed:
+- scalable_allocator now throws the std::bad_alloc exception on
+    allocation failure.
+- Fixed a race condition in the memory allocator that may lead to
+    excessive memory consumption under high multithreading load.
+- A new scheduler created right after destruction of the previous one
+    might be unable to modify the number of worker threads.
+
+Open-source contributions integrated:
+- (Added but not enabled) push_front() method of class tbb::task_list
+    by Raf Schietekat.
+
 ------------------------------------------------------------------------
 Intel TBB 4.3 Update 4
 TBB_INTERFACE_VERSION == 8004
@@ -689,7 +716,7 @@ Bugs fixed:
 - concurrent_queue counter wraparound bug was fixed, which occurred when
     the number of push and pop operations exceeded ~>4 billion on IA32.
 - fixed races in the TBB scheduler that could put workers asleep too
-    early, especially in presense of affinitized tasks.
+    early, especially in presence of affinitized tasks.
 
 ------------------------------------------------------------------------
 Intel TBB 4.0 Update 1 commercial-aligned release

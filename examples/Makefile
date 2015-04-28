@@ -68,7 +68,7 @@ else
     ifeq ($(arch),ia64)
         override CXXFLAGS += $(PIC_KEY)
     endif
-    ifeq ($(subst suncc,gcc,$(compiler)),gcc)
+    ifneq ($(filter suncc gcc clang,$(compiler)),)
         ifeq ($(compiler),suncc)
             override CXXFLAGS += -I$(tbb_root)$(SLASH)include -library=stlport4 -M$(tbb_root)/build/suncc.map.pause -erroff=unassigned,attrskipunsup,badargtype2w,badbinaryopw,wbadasg,wvarhidemem,wbadinit
         endif

@@ -128,7 +128,7 @@ struct touches {
                 printf("No touch at %d, my_num_threads = %d\n", n, my_num_threads);
             //ASSERT( all_touches[n] == true, "value not seen by any thread\n" );
         }
-        delete all_touches;
+        delete [] all_touches;
         return true;
     }
 

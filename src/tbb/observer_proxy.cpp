@@ -366,7 +366,7 @@ void task_scheduler_observer_v3::observe( bool enable ) {
                 } else
 #endif
                 {
-                    if( !s ) s = governor::init_scheduler( (unsigned)task_scheduler_init::automatic, 0, true );
+                    if( !s ) s = governor::init_scheduler( task_scheduler_init::automatic, 0, true );
                     __TBB_ASSERT( __TBB_InitOnce::initialization_done(), NULL );
                     __TBB_ASSERT( s && s->my_arena, NULL );
                     my_proxy->my_list = &s->my_arena->my_observers;
